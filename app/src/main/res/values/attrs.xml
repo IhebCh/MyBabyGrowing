@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsDividerWidth" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsPaddingMiddle" format="boolean" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsTabTextSize" format="dimension" />
+        <attr name="pstsTabTextColor" format="reference" />
+        <attr name="pstsTabTextStyle" format="reference">
+            <flag name="normal" value="0x0" />
+            <flag name="bold" value="0x1" />
+            <flag name="italic" value="0x2" />
+        </attr>
+        <attr name="pstsTabTextAllCaps" format="boolean" />
+        <attr name="pstsTabTextAlpha" format="integer" />
+        <attr name="pstsTabTextFontFamily" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialTabs">
+        <attr name="mtIndicatorColor" format="color" />
+        <attr name="mtUnderlineColor" format="color" />
+        <attr name="mtIndicatorHeight" format="dimension" />
+        <attr name="mtUnderlineHeight" format="dimension" />
+        <attr name="mtTabPaddingLeftRight" format="dimension" />
+        <attr name="mtSameWeightTabs" format="boolean" />
+        <attr name="mtTextAllCaps" format="boolean" />
+        <attr name="mtPaddingMiddle" format="boolean" />
+        <attr name="mtTextColorSelected" format="color" />
+        <attr name="mtTextUnselectedStyle">
+            <flag name="normal" value="0x0" />
+            <flag name="bold" value="0x1" />
+            <flag name="italic" value="0x2" />
+        </attr>
+        <attr name="mtTextSelectedStyle">
+            <flag name="normal" value="0x0" />
+            <flag name="bold" value="0x1" />
+            <flag name="italic" value="0x2" />
+        </attr>
+        <attr name="mtMrlRippleColor" format="color" localization="suggested" />
+        <attr name="mtMrlRippleHighlightColor" format="color" localization="suggested" />
+        <attr name="mtMrlRippleDiameter" format="dimension" localization="suggested" />
+        <attr name="mtMrlRippleOverlay" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleAlpha" format="float" localization="suggested" />
+        <attr name="mtMrlRippleDuration" format="integer" localization="suggested" />
+        <attr name="mtMrlRippleFadeDuration" format="integer" localization="suggested" />
+        <attr name="mtMrlRippleDelayClick" format="boolean" localization="suggested" />
+        <attr name="mtMrlRipplePersistent" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleInAdapter" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleRoundedCorners" format="dimension" localization="suggested" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialRippleLayout">
+        <attr name="mrlRippleColor" format="color" localization="suggested" />
+        <attr name="mrlRippleHighlightColor" format="color" localization="suggested" />
+        <attr name="mrlRippleDiameter" format="dimension" localization="suggested" />
+        <attr name="mrlRippleOverlay" format="boolean" localization="suggested" />
+        <attr name="mrlRippleAlpha" format="float" localization="suggested" />
+        <attr name="mrlRippleDuration" format="integer" localization="suggested" />
+        <attr name="mrlRippleFadeDuration" format="integer" localization="suggested" />
+        <attr name="mrlRippleDelayClick" format="boolean" localization="suggested" />
+        <attr name="mrlRipplePersistent" format="boolean" localization="suggested" />
+        <attr name="mrlRippleInAdapter" format="boolean" localization="suggested" />
+        <attr name="mrlRippleRoundedCorners" format="dimension" localization="suggested" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,22 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.itech.mybabygrowing.MotherGuideFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mother_guide_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+
+        android:background="@color/navigation_background_color"
+        >
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+</FrameLayout>

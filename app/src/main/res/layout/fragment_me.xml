@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_color_text_big"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.itech.mybabygrowing.MeFragment">
+
+
+    <com.itech.tab.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        app:pstsIndicatorColor="@color/accent_color"
+        app:pstsShouldExpand="true" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tabs"
+        android:layout_weight="1"
+     >
+
+
+    </android.support.v4.view.ViewPager>
+
+    <com.getbase.floatingactionbutton.AddFloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+
+        fab:fab_size="mini"
+        fab:fab_colorNormal="@color/accent_color"
+        fab:fab_colorPressed="@color/pop_up_color"
+        />
+</RelativeLayout>
