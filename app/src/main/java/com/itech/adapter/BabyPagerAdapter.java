@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.itech.mybabygrowing.BabyEvolutionFragment;
 import com.itech.mybabygrowing.BabyFragment;
 import com.itech.mybabygrowing.BabyNamesFragment;
+import com.itech.mybabygrowing.BabyWeightFragment;
 import com.itech.mybabygrowing.R;
 import com.itech.tab.PagerSlidingTabStrip;
 
@@ -17,10 +18,12 @@ import com.itech.tab.PagerSlidingTabStrip;
 public class BabyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider, BabyFragment.TabChangeTitleListener {
 
     private Context context;
-    private int[] iconsId = {R.drawable.babynames_icon_new, R.drawable.weekly_icon};
-    private String[] titres = {"Nom de bébé", "Evolution du bébé"};
+    private int[] iconsId = {R.drawable.babynames_icon_new,R.drawable.myweight_icon, R.drawable.weekly_icon};
+    private String[] titres = {"Nom de bébé","Poids du bébé", "Evolution du bébé"};
     BabyNamesFragment babyNamesFragment = new BabyNamesFragment() ;
     BabyEvolutionFragment babyEvolutionFragment = new BabyEvolutionFragment();
+    BabyWeightFragment babyWeightFragment = new BabyWeightFragment();
+
     public BabyPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
@@ -34,7 +37,9 @@ public class BabyPagerAdapter extends FragmentPagerAdapter implements PagerSlidi
             case 0:
                 return babyNamesFragment;
 
-            case 1:
+            case 1 : return  babyWeightFragment ;
+
+            case 2:
                 return babyEvolutionFragment;
 
         }
@@ -44,7 +49,7 @@ public class BabyPagerAdapter extends FragmentPagerAdapter implements PagerSlidi
 
     @Override
     public int getCount() {
-        return 2;
+        return titres.length;
     }
 
    /*@Override
