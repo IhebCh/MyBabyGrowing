@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
 import com.itech.adapter.RecyclerViewBabyNameAdapter;
 import com.itech.models.BabyName;
 
@@ -95,7 +96,10 @@ public class BabyNamesFragment extends Fragment {
 
         babyNamesGirls = new ArrayList<BabyName>();
 
-        babyNamesBoys.add(new BabyName("Iheb", false));
+        init_data_bebenames();
+
+
+        /*babyNamesBoys.add(new BabyName("Iheb", false));
         babyNamesBoys.add(new BabyName("Anis", false));
         babyNamesBoys.add(new BabyName("Said", false));
         babyNamesBoys.add(new BabyName("Abderahman", false));
@@ -107,7 +111,7 @@ public class BabyNamesFragment extends Fragment {
         babyNamesGirls.add(new BabyName("Hiba", false));
         babyNamesGirls.add(new BabyName("Lina", false));
         babyNamesGirls.add(new BabyName("Nawal", false));
-        babyNamesGirls.add(new BabyName("Khadija", false));
+        babyNamesGirls.add(new BabyName("Khadija", false));*/
 
 
         recyclerViewBabyNameAdapter = new RecyclerViewBabyNameAdapter(getActivity(), babyNamesBoys,babyNamesGirls);
@@ -152,4 +156,14 @@ public class BabyNamesFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public  void init_data_bebenames(){
+        DataBaseSQLiteHandler dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
+        babyNamesBoys=dbh.getBabyNamesByGenre("boy") ;
+        babyNamesGirls=dbh.getBabyNamesByGenre("girl") ;
+
+
+
+
+
+    }
 }
