@@ -212,7 +212,7 @@ public class ToDoFragment extends Fragment implements DatePickerDialogFragment.D
 
     @Override
     public void onDialogDateSet(int i, int i1, int i2, int i3) {
-        addDate.setText(i3 + "/" + i2 + "/" + i1);
+        addDate.setText(i3 + "/" + (i2+1) + "/" + i1);
     }
 
     @Override

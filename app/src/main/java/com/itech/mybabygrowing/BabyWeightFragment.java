@@ -268,7 +268,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     @Override
     public void onDialogDateSet(int i, int i1, int i2, int i3) {
-        addDate.setText(i3+"/"+i2+"/"+i1);
+        addDate.setText(i3+"/"+(i2+1)+"/"+i1);
         dateAdded=true;
     }
 
@@ -346,10 +346,10 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
             set1.setCubicIntensity(0.2f);
             set1.setDrawFilled(true);
             set1.setDrawCircles(false);
-            set1.setLineWidth(2f);
-            set1.setCircleSize(5f);
-            set1.setHighLightColor(Color.rgb(244, 22, 117));
-            set1.setColor(Color.rgb(254, 22, 175));
+            set1.setLineWidth(1f);
+            set1.setCircleSize(1f);
+            set1.setHighLightColor(Color.rgb(133 , 255,196));
+            set1.setColor(Color.rgb(133, 255, 196));
 
             dataSets.add(set1);
 
