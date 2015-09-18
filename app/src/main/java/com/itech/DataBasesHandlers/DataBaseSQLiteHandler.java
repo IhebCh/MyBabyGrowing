@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
@@ -40,6 +40,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
         ajouterDesNomsBebes(db);
+        ajouterDesRendezvous(db);
 
     }
     // en cas de changement de version et la BDD existe déjà
