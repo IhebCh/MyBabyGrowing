@@ -40,7 +40,6 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
         ajouterDesNomsBebes(db);
-        ajouterDesRendezvous(db);
 
     }
     // en cas de changement de version et la BDD existe déjà
@@ -82,6 +81,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         ArrayList<BabyName> babyNameslist = new ArrayList<BabyName>();
         String query ="select * from babyname where lower(genre)=?";
 
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{genre.toLowerCase()});
         if(cursor.moveToFirst()) {
@@ -107,12 +107,11 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
     public  ArrayList<Appointement> getAllAppointement() {
         ArrayList<Appointement> rendezvouslist = new ArrayList<Appointement>();
-
         String query ="select * from rendezvous";
+
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null) ;
-
         if(cursor.moveToFirst()) {
             do {
                 Appointement rendezvous = new Appointement();
