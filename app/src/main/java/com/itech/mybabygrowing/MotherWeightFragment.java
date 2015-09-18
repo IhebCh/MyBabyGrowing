@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
+import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
 import com.itech.models.Poids;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
     private String mParam1;
     private String mParam2;
     private LinearLayout linearLayout;
+    private DataBaseSQLiteHandler dbh ;
 
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -101,6 +104,12 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
+        ArrayList<Poids> listes_poids = dbh.getAllPoids() ;
+        for(Poids poid  :  listes_poids){
+            Log.d(poid.getDate(), ((Float)poid.getPoid()).toString()) ;
+
         }
 
     }
@@ -286,34 +295,46 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
                 });
 
         if(dateAdded && poidAdded) {
-            xValsDates.add(addDate.getText() + "");
+                xValsDates.add(addDate.getText() + "");
 
-            vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
-            cpt++;
+                vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
+                cpt++;
 
-            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
-            set1.setDrawCubic(true);
-            set1.setCubicIntensity(0.2f);
-            set1.setDrawFilled(true);
-            set1.setDrawCircles(false);
-            set1.setLineWidth(2f);
-            set1.setCircleSize(5f);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.rgb(104, 241, 175));
+                LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+                set1.setDrawCubic(true);
+                set1.setCubicIntensity(0.2f);
+                set1.setDrawFilled(true);
+                set1.setDrawCircles(false);
+                set1.setLineWidth(2f);
+                set1.setCircleSize(5f);
+                set1.setHighLightColor(Color.rgb(244, 117, 117));
+                set1.setColor(Color.rgb(104, 241, 175));
 
-            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-            dataSets.add(set1);
+                ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+                dataSets.add(set1);
 
-            // create a data object with the datasets
-            LineData data = new LineData(xValsDates, dataSets);
+                // create a data object with the datasets
+                LineData data = new LineData(xValsDates, dataSets);
 
-            // set data
-            mChart.setData(data);
+                // set data
+                mChart.setData(data);
 
-            Poids  lastAddedPoids = new Poids();
+                Poids  lastAddedPoids = new Poids();
 
-            lastAddedPoids.setDate(addDate.getText().toString());
-            lastAddedPoids.setPoid(Float.parseFloat(addDate.getText().toString()));
+                lastAddedPoids.setDate(addDate.getText().toString());
+                lastAddedPoids.setPoid(Float.parseFloat(addPoids.getText().toString().replace(" Kg","")));
+           // lastAddedPoids.setPoid( Float.valueOf(addPoids.getText().toString())) ;
+
+
+
+
+            dbh.ajouterPoids(lastAddedPoids);
+            dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
+            ArrayList<Poids> listes_poids = dbh.getAllPoids() ;
+            for(Poids poid  :  listes_poids){
+                Log.d(poid.getDate(), ((Float)poid.getPoid()).toString()) ;
+
+            }
 
 
 
