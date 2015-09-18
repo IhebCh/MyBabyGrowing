@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
+import com.itech.models.Poids;
 
 import java.util.ArrayList;
 
@@ -69,19 +70,6 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
     private void setData(int count, float range) {
 
-    /*    for (int i = 0; i < 36; i++) {
-            xValsDates.add((i) + "");
-        }
-*/
-
-     /*   for (int i = 0; i < 36; i++) {
-            float mult = (range + 1);
-            float val = (float) (i/10+10*Math.random()-10*Math.random()) + 60;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            vals1Poids.add(new Entry(val, i));
-        }
-*/
 
     }
 
@@ -321,6 +309,14 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
             // set data
             mChart.setData(data);
+
+            Poids  lastAddedPoids = new Poids();
+
+            lastAddedPoids.setDate(addDate.getText().toString());
+            lastAddedPoids.setPoid(Float.parseFloat(addDate.getText().toString()));
+
+
+
         }
 
     }
