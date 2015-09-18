@@ -7,7 +7,7 @@ import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
  */
 public class Appointement {
     private int id ;
-    DataBaseSQLiteHandler dbh ;
+
 
     String nom, date, heure, commentaire;
 

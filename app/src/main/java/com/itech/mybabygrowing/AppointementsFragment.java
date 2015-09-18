@@ -22,6 +22,7 @@ import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.timepicker.TimePickerBuilder;
 import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
 import com.itech.adapter.RecyclerViewAppointementAdapter;
 import com.itech.models.Appointement;
 
@@ -40,6 +41,8 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    DataBaseSQLiteHandler dbh ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
