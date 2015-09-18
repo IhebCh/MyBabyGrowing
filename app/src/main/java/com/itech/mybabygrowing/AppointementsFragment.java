@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,13 +56,13 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
     private ViewGroup.LayoutParams layoutParams;
     private TextView addDate, addHeure;
     private EditText nom, commentaire;
-
+    private ArrayList<Appointement> appointements = new ArrayList<Appointement>();
     //  private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
+     *;
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment AppointementsFragment.
@@ -87,6 +88,23 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
+        appointements=dbh.getAllAppointement();
+
+        for(Appointement a : appointements){
+
+            if(a!=null){
+                Log.d("rendez vous", a.getNom()) ;
+                addAppointement(a);
+            }
+            else{
+                Log.d("rendez vous", "null" ) ;
+            }
+
+
+        }
+
     }
 
     @Override
@@ -190,7 +208,12 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
                         addFloatingActionButton.setColorNormal(getResources().getColor(R.color.accent_color));
 
                         addFloatingActionButton.setClickable(true);
-                        addAppointement();
+                            Appointement appointement = new Appointement();
+        appointement.setDate(addDate.getText().toString());
+        appointement.setHeure(addHeure.getText().toString());
+        appointement.setNom(nom.getText().toString());
+        appointement.setIcon(R.drawable.timeline_icon);
+                        addAppointement(appointement);
 
 
                     }
@@ -236,12 +259,8 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void addAppointement(){
-        Appointement appointement = new Appointement();
-        appointement.setDate(addDate.getText().toString());
-        appointement.setHeure(addHeure.getText().toString());
-        appointement.setNom(nom.getText().toString());
-        appointement.setIcon(R.drawable.timeline_icon);
+    public void addAppointement(Appointement appointement){
+
         recyclerViewAppointementAdapter.add(appointement);
         commentaire.setText("");
         addDate.setText("");
