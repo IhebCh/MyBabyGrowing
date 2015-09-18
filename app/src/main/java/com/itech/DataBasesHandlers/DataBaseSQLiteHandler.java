@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
+import com.itech.models.Appointement;
 import com.itech.models.BabyName;
 
 import java.io.ByteArrayOutputStream;
@@ -20,6 +21,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
+    private ArrayList<Appointement> rendezvous_tous;
 
 
 
@@ -32,7 +34,11 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String create_table_babyname = "create table " +
                 "babyname(id integer primary key,nombebe text,checked integer, genre text)";
+        String create_table_rendezvous = "create table " +
+                "rendezvous(id integer primary key,nomrendezvous text, date text, heure text)";
+
         db.execSQL(create_table_babyname);
+        db.execSQL(create_table_rendezvous);
         ajouterDesNomsBebes(db);
 
     }
@@ -44,7 +50,8 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     }
    public void ajouterDesNomsBebes(SQLiteDatabase db) {
        // SQLiteDatabase db = this.getWritableDatabase();
-       initData();
+       initData_babynames();
+
        for(BabyName babyname : babyNames_tous){
            ContentValues contentValues = new ContentValues();
            contentValues.put("nombebe", babyname.getName());
@@ -55,6 +62,20 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
        }
 
    }
+
+    public void ajouterDesRendezvous(SQLiteDatabase db) {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        init_data_rendezvous();
+        for(Appointement rendezvous : rendezvous_tous){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nomrendezvous", rendezvous.getNom());
+            contentValues.put("date", rendezvous.getDate());
+            contentValues.put("heure", rendezvous.getHeure());
+            db.insert("rendezvous",null,contentValues);
+            //db.close();
+        }
+
+    }
 
     public  ArrayList<BabyName> getBabyNamesByGenre(String genre) {
         ArrayList<BabyName> babyNameslist = new ArrayList<BabyName>();
@@ -84,8 +105,30 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         return babyNameslist ;
     }
 
+    public  ArrayList<Appointement> getAllAppointement() {
+        ArrayList<Appointement> rendezvouslist = new ArrayList<Appointement>();
+        String query ="select * from rendezvous";
 
-    public void initData(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null) ;
+        if(cursor.moveToFirst()) {
+            do {
+                Appointement rendezvous = new Appointement();
+                rendezvous.setId(cursor.getInt(0));
+                rendezvous.setNom(cursor.getString(1));
+                rendezvous.setDate(cursor.getString(2));
+                rendezvous.setDate(cursor.getString(3));
+                rendezvous.setDate(cursor.getString(4));
+                rendezvouslist.add(rendezvous);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return rendezvouslist ;
+    }
+
+
+    public void initData_babynames(){
         BabyName[] babyName_tous_table = new BabyName[]
        { new BabyName("Iheb", false,"boy"),
         new BabyName("Anis", false,"boy"),
@@ -107,6 +150,25 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         babyNames_tous =  new ArrayList<>(Arrays.asList(babyName_tous_table)) ;
     }
 
+    public void init_data_rendezvous() {
+        Appointement[] rendezvous_tous = new Appointement[]
+                {new Appointement("rendez vous 1","20 / 06 / 2015 ", "08:00", " rendez vous pour ... "),
+                        new Appointement("rendez vous 2","12 / 07 / 2015 ", "09:00", " rendez vous pour ... "),
+                        new Appointement("rendez vous 3","10 / 08 / 2015 ", "10:00", " rendez vous pour ..."),
+
+                } ;
+    }
+    public void ajouterRendezVous(String nom , String date , String heure , String commentaire){
+
+        SQLiteDatabase db = this.getWritableDatabase() ;
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("nomrendezvous", nom);
+        contentValues.put("date", date);
+        contentValues.put("heure", heure);
+        contentValues.put("commentaire", commentaire);
+        db.insert("rendezvous",null,contentValues);
+    }
     public byte[] getImageByte(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG,100,stream);
