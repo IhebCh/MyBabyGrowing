@@ -1,6 +1,11 @@
 package com.itech.mybabygrowing;
 
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -92,6 +97,7 @@ public class BabyFragment extends Fragment {
 
         pagerSlidingTabStrip.setViewPager(viewPager);
 
+
         pagerSlidingTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -102,6 +108,7 @@ public class BabyFragment extends Fragment {
                 floatingActionButton.setScaleX(1 - positionOffset * 2);
 
                 floatingActionButton.setScaleY(1 - positionOffset * 2);
+
                 //  if (positionOffset >0.5) positionOffset=1-positionOffset ;
                 //    floatingActionButton.setAlpha(1 - positionOffset*2 );
             }
@@ -118,10 +125,32 @@ public class BabyFragment extends Fragment {
                             floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.male));
                         } else {
                             floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.female));
+
                         }
                         break;
 
-                    case 1:
+                    case 1 :
+
+                        final float iconSize = floatingActionButton.getResources().getDimension(com.getbase.floatingactionbutton.R.dimen.fab_icon_size);
+                        final float iconHalfSize = iconSize / 2.0F;
+                        float plusSize = floatingActionButton.getResources().getDimension(com.getbase.floatingactionbutton.R.dimen.fab_plus_icon_size);
+                        final float plusHalfStroke = floatingActionButton.getResources().getDimension(com.getbase.floatingactionbutton.R.dimen.fab_plus_icon_stroke) / 2.0F;
+                        final float plusOffset = (iconSize - plusSize) / 2.0F;
+                        Shape shape = new Shape() {
+                            public void draw(Canvas canvas, Paint paint) {
+                                 canvas.drawRect(plusOffset, iconHalfSize - plusHalfStroke, iconSize - plusOffset, iconHalfSize + plusHalfStroke, paint);
+                                 canvas.drawRect(iconHalfSize - plusHalfStroke, plusOffset, iconHalfSize + plusHalfStroke, iconSize - plusOffset, paint);
+                            }
+                        };
+                        ShapeDrawable drawable = new ShapeDrawable(shape);
+                        Paint paint = drawable.getPaint();
+                        paint.setColor(Color.WHITE);
+                        paint.setStyle(Paint.Style.FILL);
+                        paint.setAntiAlias(true);
+
+                        floatingActionButton.setIconDrawable(drawable);
+                        break;
+                    case 2:
                         floatingActionButton.setIcon(android.R.color.transparent);
                         break;
                 }
@@ -144,10 +173,13 @@ public class BabyFragment extends Fragment {
             public void onClick(View v) {
                 switch (currentPage) {
                     case 0:
-                        if (((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).isBoysList())
+
+                        if (((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).isBoysList()) {
                             ((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).showGirlsList(floatingActionButton);
-                        else
+                        }
+                        else {
                             ((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).showBoysList(floatingActionButton);
+                        }
 
                         break;
                     case 1:

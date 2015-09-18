@@ -99,20 +99,19 @@ public class BabyNamesFragment extends Fragment {
         babyNamesBoys.add(new BabyName("Iheb", false));
         babyNamesBoys.add(new BabyName("Anis", false));
         babyNamesBoys.add(new BabyName("Said", false));
-        babyNamesGirls.add(new BabyName("Lina", false));
-        babyNamesBoys.add(new BabyName("Toufik", false));
-        babyNamesBoys.add(new BabyName("Iheb", false));
-        babyNamesBoys.add(new BabyName("Anis", false));
-        babyNamesBoys.add(new BabyName("Said", false));
-        babyNamesGirls.add(new BabyName("Hiba", false));
-        babyNamesBoys.add(new BabyName("Toufik", false));
-        babyNamesBoys.add(new BabyName("Iheb", false));
-        babyNamesBoys.add(new BabyName("Anis", false));
-        babyNamesBoys.add(new BabyName("Said", false));
-        babyNamesGirls.add(new BabyName("Nawal", false));
-        babyNamesBoys.add(new BabyName("Toufik", false));
+        babyNamesBoys.add(new BabyName("Abderahman", false));
+        babyNamesBoys.add(new BabyName("Amine", false));
+        babyNamesBoys.add(new BabyName("Imad", false));
+        babyNamesBoys.add(new BabyName("Ishak", false));
+        babyNamesBoys.add(new BabyName("Younes", false));
 
-        recyclerViewBabyNameAdapter = new RecyclerViewBabyNameAdapter(getActivity(), babyNamesBoys);
+        babyNamesGirls.add(new BabyName("Hiba", false));
+        babyNamesGirls.add(new BabyName("Lina", false));
+        babyNamesGirls.add(new BabyName("Nawal", false));
+        babyNamesGirls.add(new BabyName("Khadija", false));
+
+
+        recyclerViewBabyNameAdapter = new RecyclerViewBabyNameAdapter(getActivity(), babyNamesBoys,babyNamesGirls);
         recyclerView.setAdapter(recyclerViewBabyNameAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -134,14 +133,16 @@ public class BabyNamesFragment extends Fragment {
 
     public void showBoysList( FloatingActionButton floatingActionButton) {
         boysList = true;
-        recyclerViewBabyNameAdapter.changeList(babyNamesBoys);
+        recyclerViewBabyNameAdapter.changeList(true);
         floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.male));
+
+
 
     }
 
     public void showGirlsList(FloatingActionButton floatingActionButton) {
         boysList = false;
-        recyclerViewBabyNameAdapter.changeList(babyNamesGirls);
+        recyclerViewBabyNameAdapter.changeList(false);
         floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.female));
 
 

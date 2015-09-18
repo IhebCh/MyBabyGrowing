@@ -33,12 +33,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MotherWeightFragment.OnFragmentInteractionListener} interface
+ * {@link BabyWeightFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MotherWeightFragment#newInstance} factory method to
+ * Use the {@link BabyWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MotherWeightFragment extends Fragment    implements DatePickerDialogFragment.DatePickerDialogHandler,NumberPickerDialogFragment.NumberPickerDialogHandler  {
+public class BabyWeightFragment extends Fragment  implements DatePickerDialogFragment.DatePickerDialogHandler,NumberPickerDialogFragment.NumberPickerDialogHandler  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,54 +47,20 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private LinearLayout linearLayout;
 
-    private LineChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
-    private TextView tvX, tvY;
-    private ViewGroup container;
-    private ViewGroup.LayoutParams layoutParams;
-    private TextView addPoids,addDate ;
-    private boolean dateAdded =false ,poidAdded=false;
-    ArrayList<String> xValsDates = new ArrayList<String>();
+    private OnFragmentInteractionListener mListener;
 
-    ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
-    int cpt = 0 ;
-
-    public boolean isAddPoidsIsVisible() {
-        return addPoidsIsVisible;
-    }
-
-    private boolean addPoidsIsVisible;
-
-    private void setData(int count, float range) {
-
-    /*    for (int i = 0; i < 36; i++) {
-            xValsDates.add((i) + "");
-        }
-*/
-
-     /*   for (int i = 0; i < 36; i++) {
-            float mult = (range + 1);
-            float val = (float) (i/10+10*Math.random()-10*Math.random()) + 60;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            vals1Poids.add(new Entry(val, i));
-        }
-*/
-
-    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MotherWeightFragment.
+     * @return A new instance of fragment BabyWeightFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MotherWeightFragment newInstance(String param1, String param2) {
-        MotherWeightFragment fragment = new MotherWeightFragment();
+    public static BabyWeightFragment newInstance(String param1, String param2) {
+        BabyWeightFragment fragment = new BabyWeightFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -102,118 +68,144 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         return fragment;
     }
 
-    public MotherWeightFragment() {
-        // Required empty public constructor
+    private LinearLayout linearLayout;
+
+    private LineChart mChart;
+    private SeekBar mSeekBarX, mSeekBarY;
+    private TextView tvX, tvY;
+    private ViewGroup container;
+    private ViewGroup.LayoutParams layoutParams;
+    private TextView addPoids, addDate;
+    private boolean dateAdded = false, poidAdded = false;
+    ArrayList<String> xValsDates = new ArrayList<String>();
+
+    ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
+    int cpt = 0;
+
+    public boolean isAddPoidsIsVisible() {
+        return addPoidsIsVisible;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private boolean addPoidsIsVisible;
+
+
+
+        public BabyWeightFragment() {
+            // Required empty public constructor
         }
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mother_weight, container, false);
-        this.container = container;
-        linearLayout = (LinearLayout) view.findViewById(R.id.addPoids);
-        //   hideAddAppointments();
-        layoutParams = linearLayout.getLayoutParams() ;
-        //   linearLayout.animate().scaleY(0).alpha(1.0f).setDuration(5000);
-        addPoidsIsVisible = false;
-        linearLayout.setVisibility(View.GONE);
-
-        addPoids=(TextView)view.findViewById(R.id.poids);
-        addDate=(TextView)view.findViewById(R.id.date);
-        final Time time = new Time();
-        time.setToNow();
-
-        addPoids.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NumberPickerBuilder npb = new NumberPickerBuilder()
-                        .setFragmentManager(getChildFragmentManager())
-                        .setStyleResId(R.style.BetterPickersDialogFragment)
-                        .setTargetFragment(MotherWeightFragment.this);
-
-                npb.show();
-
+        @Override
+        public void onCreate (Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                mParam1 = getArguments().getString(ARG_PARAM1);
+                mParam2 = getArguments().getString(ARG_PARAM2);
             }
-        });
+        }
 
-        addDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerBuilder dpb = new DatePickerBuilder()
-                        .setFragmentManager(getChildFragmentManager())
-                        .setStyleResId(R.style.BetterPickersDialogFragment)
-                        .setTargetFragment(MotherWeightFragment.this);
-                dpb.setYear(time.year);
-                dpb.setMonthOfYear(time.month);
-                dpb.show();
-            }
-        });
+        @Override
+        public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState){
+            // Inflate the layout for this fragment
+            View view = inflater.inflate(R.layout.fragment_baby_weight, container, false);
+            this.container = container;
+            linearLayout = (LinearLayout) view.findViewById(R.id.addPoids);
+            //   hideAddAppointments();
+            layoutParams = linearLayout.getLayoutParams();
+            //   linearLayout.animate().scaleY(0).alpha(1.0f).setDuration(5000);
+            addPoidsIsVisible = false;
+            linearLayout.setVisibility(View.GONE);
+
+            addPoids = (TextView) view.findViewById(R.id.poids);
+            addDate = (TextView) view.findViewById(R.id.date);
+            final Time time = new Time();
+            time.setToNow();
+
+            addPoids.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NumberPickerBuilder npb = new NumberPickerBuilder()
+                            .setFragmentManager(getChildFragmentManager())
+                            .setStyleResId(R.style.BetterPickersDialogFragment)
+                            .setTargetFragment(BabyWeightFragment.this);
+
+                    npb.show();
+
+                }
+            });
+
+            addDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatePickerBuilder dpb = new DatePickerBuilder()
+                            .setFragmentManager(getChildFragmentManager())
+                            .setStyleResId(R.style.BetterPickersDialogFragment)
+                            .setTargetFragment(BabyWeightFragment.this);
+                    dpb.setYear(time.year);
+                    dpb.setMonthOfYear(time.month);
+                    dpb.show();
+                }
+            });
 
          /*
                ************ Chart ***************
          */
 
-        mChart = (LineChart) view.findViewById(R.id.chart1);
-        // if enabled, the chart will always start at zero on the y-axis
-        mChart.setStartAtZero(true);
+            mChart = (LineChart) view.findViewById(R.id.chart1);
+            // if enabled, the chart will always start at zero on the y-axis
+            mChart.setStartAtZero(true);
 
-        // disable the drawing of values into the chart
-        mChart.setDrawYValues(false);
+            // disable the drawing of values into the chart
+            mChart.setDrawYValues(false);
 
-        mChart.setDrawBorder(true);
+            mChart.setDrawBorder(true);
 
-        mChart.setDrawLegend(false);
+            mChart.setDrawLegend(false);
 
-        // no description text
-        mChart.setDescription("");
-        mChart.setUnit(" Kg");
+            // no description text
+            mChart.setDescription("");
+            mChart.setUnit(" Kg");
 
 
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
+            // enable value highlighting
+            mChart.setHighlightEnabled(true);
 
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
+            // enable touch gestures
+            mChart.setTouchEnabled(true);
 
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+            // enable scaling and dragging
+            mChart.setDragEnabled(true);
+            mChart.setScaleEnabled(true);
 
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
+            // if disabled, scaling can be done on x- and y-axis separately
+            mChart.setPinchZoom(false);
 
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
+            mChart.setDrawGridBackground(false);
+            mChart.setDrawVerticalGrid(false);
 
-        //  Typeface tf = Typeface.createFromAsset(v.getAssets(), "OpenSans-Regular.ttf");
-        //   mChart.setValueTypeface(tf);
+            //  Typeface tf = Typeface.createFromAsset(v.getAssets(), "OpenSans-Regular.ttf");
+            //   mChart.setValueTypeface(tf);
 
-        XLabels x = mChart.getXLabels();
-        //  x.setTypeface(tf);
+            XLabels x = mChart.getXLabels();
+            //  x.setTypeface(tf);
 
-        YLabels y = mChart.getYLabels();
-        //  y.setTypeface(tf);
-        y.setLabelCount(1);
+            YLabels y = mChart.getYLabels();
+            //  y.setTypeface(tf);
+            y.setLabelCount(1);
 
-        //setData(36, 100);
-        mChart.animateXY(2000, 2000);
+            //setData(36, 100);
+            mChart.animateXY(2000, 2000);
 
-        return  view ;
+            return view;
+        }
 
+        // TODO: Rename method, update argument and hook method into UI event
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -290,8 +282,8 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
                         addDate.setText("");
                         addPoids.setText("");
-                        dateAdded = false ;
-                        poidAdded = false ;
+                        dateAdded = false;
+                        poidAdded = false;
 
                     }
                 });
@@ -323,4 +315,5 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         }
 
     }
+
 }
