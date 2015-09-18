@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
@@ -33,7 +33,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String create_table_babyname = "create table " +
-                "babyname(id integer primary key,nombebe text,checked integer, genre text)";
+                "babyname(nombebe text  primary key,checked integer, genre text)";
         String create_table_rendezvous = "create table " +
                 "rendezvous(id integer primary key,nomrendezvous text, date text, heure text, commentaire text)";
 
@@ -46,6 +46,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS babyname");
+        db.execSQL("DROP TABLE IF EXISTS rendezvous");
         onCreate(db);
     }
    public void ajouterDesNomsBebes(SQLiteDatabase db) {
@@ -87,9 +88,9 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 BabyName babyName = new BabyName();
-                babyName.setId(cursor.getInt(0));
-                babyName.setName(cursor.getString(1));
-                if(cursor.getInt(2)==1){
+
+                babyName.setName(cursor.getString(0));
+                if(cursor.getInt(1)==1){
                     babyName.setChecked(true);
                 }
                 else{
@@ -97,7 +98,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
                 }
 
 
-                babyName.setGenre(cursor.getString(3));
+                babyName.setGenre(cursor.getString(2));
                 babyNameslist.add(babyName);
             }while(cursor.moveToNext());
         }

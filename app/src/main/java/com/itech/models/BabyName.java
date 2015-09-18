@@ -4,7 +4,7 @@ package com.itech.models;
  * Created by oSunshine on 08/08/2015.
  */
 public class BabyName {
-    private int id ;
+
     private String name ;
     private boolean checked ;
     private String genre ;
@@ -51,11 +51,4 @@ public class BabyName {
         this.genre = genre;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

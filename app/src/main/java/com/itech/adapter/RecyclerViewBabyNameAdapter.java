@@ -165,13 +165,15 @@ public class RecyclerViewBabyNameAdapter extends BaseAdapter {
 
 
                 if(isChecked==true){
-                    String strSQL = "UPDATE babyname SET checked =1 WHERE id = "+position;
+                   // String strSQL = "UPDATE babyname SET checked =1 WHERE id = "+position;
+                    String strSQL = "UPDATE babyname SET checked =1 WHERE nombebe like '"+selectedList.get(position).getName()+"'";
                     dbh.getWritableDatabase().execSQL(strSQL);
                     Log.d("checked 1 ", ((Integer) position).toString()) ;
 
                 }
                 else{
-                    String strSQL = "UPDATE babyname SET checked =0 WHERE id = "+position;
+                    String strSQL = "UPDATE babyname SET checked =0 WHERE nombebe like '"+selectedList.get(position).getName()+"'";
+
                     dbh.getWritableDatabase().execSQL(strSQL);
                     Log.d("checked 0 ", ((Integer) position).toString()) ;
                 }
