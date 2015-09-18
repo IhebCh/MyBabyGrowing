@@ -119,8 +119,8 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
                 rendezvous.setId(cursor.getInt(0));
                 rendezvous.setNom(cursor.getString(1));
                 rendezvous.setDate(cursor.getString(2));
-                rendezvous.setDate(cursor.getString(3));
-                rendezvous.setDate(cursor.getString(4));
+                rendezvous.setHeure(cursor.getString(3));
+                rendezvous.setCommentaire(cursor.getString(4));
                 rendezvouslist.add(rendezvous);
             }while(cursor.moveToNext());
         }
