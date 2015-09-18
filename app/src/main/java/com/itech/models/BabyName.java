@@ -4,10 +4,26 @@ package com.itech.models;
  * Created by oSunshine on 08/08/2015.
  */
 public class BabyName {
+    private int id ;
     private String name ;
     private boolean checked ;
     private String genre ;
 
+
+
+    public BabyName(String name, boolean checked) {
+        this.name = name;
+        this.setChecked(checked);
+    }
+    public BabyName(String name, boolean checked, String genre) {
+        this.name = name;
+        this.setChecked(checked);
+        this.setGenre(genre);
+    }
+
+    public BabyName(){
+
+    }
 
     public String getName() {
         return name;
@@ -25,13 +41,21 @@ public class BabyName {
         this.checked = checked;
     }
 
-    public BabyName(String name, boolean checked) {
-        this.name = name;
-        this.setChecked(checked);
+
+
+    public String getGenre() {
+        return genre;
     }
-    public BabyName(String name, boolean checked, String genre) {
-        this.name = name;
-        this.setChecked(checked);
-        this.genre= genre ;
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
