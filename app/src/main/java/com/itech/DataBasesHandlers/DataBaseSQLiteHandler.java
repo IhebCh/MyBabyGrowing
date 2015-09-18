@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
@@ -35,7 +35,7 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         String create_table_babyname = "create table " +
                 "babyname(id integer primary key,nombebe text,checked integer, genre text)";
         String create_table_rendezvous = "create table " +
-                "rendezvous(id integer primary key,nomrendezvous text, date text, heure text)";
+                "rendezvous(id integer primary key,nomrendezvous text, date text, heure text, commentaire text)";
 
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
@@ -152,12 +152,13 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     }
 
     public void init_data_rendezvous() {
-        Appointement[] rendezvous_tous = new Appointement[]
+        Appointement[] rendezvous_tous_table = new Appointement[]
                 {new Appointement("rendez vous 1","20 / 06 / 2015 ", "08:00", " rendez vous pour ... "),
                         new Appointement("rendez vous 2","12 / 07 / 2015 ", "09:00", " rendez vous pour ... "),
                         new Appointement("rendez vous 3","10 / 08 / 2015 ", "10:00", " rendez vous pour ..."),
 
                 } ;
+        rendezvous_tous = new ArrayList<>(Arrays.asList(rendezvous_tous_table)) ;
     }
     public void ajouterRendezVous(String nom , String date , String heure , String commentaire){
 

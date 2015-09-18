@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,11 +89,20 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
         appointements=dbh.getAllAppointement();
 
         for(Appointement a : appointements){
 
-            addAppointement(a);
+            if(a!=null){
+                Log.d("rendez vous", a.getNom()) ;
+                addAppointement(a);
+            }
+            else{
+                Log.d("rendez vous", "null" ) ;
+            }
+
+
         }
 
     }
