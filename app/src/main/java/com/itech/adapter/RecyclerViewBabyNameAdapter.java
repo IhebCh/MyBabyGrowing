@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
 import com.itech.models.BabyName;
 import com.itech.mybabygrowing.R;
 
@@ -90,8 +91,27 @@ public class RecyclerViewBabyNameAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 selectedList.get(position).setChecked(isChecked);
+                DataBaseSQLiteHandler dbh =new DataBaseSQLiteHandler(context);
+
+
+                if(isChecked==true){
+                   // String strSQL = "UPDATE babyname SET checked =1 WHERE id = "+position;
+                    String strSQL = "UPDATE babyname SET checked =1 WHERE nombebe like '"+selectedList.get(position).getName()+"'";
+                    dbh.getWritableDatabase().execSQL(strSQL);
+                    Log.d("checked 1 ", ((Integer) position).toString()) ;
+
+                }
+                else{
+                    String strSQL = "UPDATE babyname SET checked =0 WHERE nombebe like '"+selectedList.get(position).getName()+"'";
+
+                    dbh.getWritableDatabase().execSQL(strSQL);
+                    Log.d("checked 0 ", ((Integer) position).toString()) ;
+                }
+
+
             }
         });
+
         Log.v("dkholt", "DrawerListViewnItemAdapter-getViewAfter");
 
 
