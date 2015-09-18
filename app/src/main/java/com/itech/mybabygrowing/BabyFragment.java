@@ -138,8 +138,8 @@ public class BabyFragment extends Fragment {
                         final float plusOffset = (iconSize - plusSize) / 2.0F;
                         Shape shape = new Shape() {
                             public void draw(Canvas canvas, Paint paint) {
-                                canvas.drawRect(plusOffset, iconHalfSize - plusHalfStroke, iconSize - plusOffset, iconHalfSize + plusHalfStroke, paint);
-                                canvas.drawRect(iconHalfSize - plusHalfStroke, plusOffset, iconHalfSize + plusHalfStroke, iconSize - plusOffset, paint);
+                                 canvas.drawRect(plusOffset, iconHalfSize - plusHalfStroke, iconSize - plusOffset, iconHalfSize + plusHalfStroke, paint);
+                                 canvas.drawRect(iconHalfSize - plusHalfStroke, plusOffset, iconHalfSize + plusHalfStroke, iconSize - plusOffset, paint);
                             }
                         };
                         ShapeDrawable drawable = new ShapeDrawable(shape);
