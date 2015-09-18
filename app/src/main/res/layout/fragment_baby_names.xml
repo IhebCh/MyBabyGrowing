@@ -14,10 +14,12 @@
 
 
 
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/list_baby_names"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></android.support.v7.widget.RecyclerView>
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_height="fill_parent"></ListView>
     </LinearLayout>
 
 </LinearLayout>

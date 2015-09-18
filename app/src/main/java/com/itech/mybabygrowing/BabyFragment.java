@@ -183,7 +183,10 @@ public class BabyFragment extends Fragment {
 
                         break;
                     case 1:
-
+                        if (!((BabyWeightFragment) babyPagerAdapter.getItem(currentPage)).isAddPoidsIsVisible())
+                            ((BabyWeightFragment) babyPagerAdapter.getItem(currentPage)).showAddPoids( floatingActionButton);
+                        else
+                            ((BabyWeightFragment) babyPagerAdapter.getItem(currentPage)).hideAddPoids( floatingActionButton);
                         break;
                 }
             }

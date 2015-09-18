@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.itech.adapter.RecyclerViewBabyNameAdapter;
@@ -34,7 +33,7 @@ public class BabyNamesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RecyclerView recyclerView;
+    private ListView listView;
     private RecyclerViewBabyNameAdapter recyclerViewBabyNameAdapter;
     private ArrayList<BabyName> babyNamesBoys;
     private ArrayList<BabyName> babyNamesGirls;
@@ -90,7 +89,7 @@ public class BabyNamesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_baby_names, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_baby_names);
+        listView = (ListView) view.findViewById(R.id.list_baby_names);
 
         babyNamesBoys = new ArrayList<BabyName>();
 
@@ -112,8 +111,8 @@ public class BabyNamesFragment extends Fragment {
 
 
         recyclerViewBabyNameAdapter = new RecyclerViewBabyNameAdapter(getActivity(), babyNamesBoys,babyNamesGirls);
-        recyclerView.setAdapter(recyclerViewBabyNameAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        listView.setAdapter(recyclerViewBabyNameAdapter);
+       // listView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -132,11 +131,10 @@ public class BabyNamesFragment extends Fragment {
     }
 
     public void showBoysList( FloatingActionButton floatingActionButton) {
+
         boysList = true;
         recyclerViewBabyNameAdapter.changeList(true);
         floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.male));
-
-
 
     }
 

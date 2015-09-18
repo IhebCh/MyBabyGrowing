@@ -1,11 +1,11 @@
 package com.itech.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -19,9 +19,10 @@ import java.util.List;
 /**
  * Created by oSunshine on 08/08/2015.
  */
-public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerViewBabyNameAdapter.RecyclerViewBabyNameHolder> {
+public class RecyclerViewBabyNameAdapter extends BaseAdapter {
 
 
+    private  Context context;
     private List<BabyName> boysNames;
     private List<BabyName> girlsNames;
     private List<BabyName> selectedList;
@@ -32,6 +33,7 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
         this.girlsNames = new ArrayList<>(girlsNames);
         this.boysNames = new ArrayList<>(boysNames);
         selectedList = boysNames;
+        this.context=context ;
         inflater = LayoutInflater.from(context);
 
     }
@@ -40,7 +42,7 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
         return boysNames;
     }
 
-    @Override
+/*    @Override
     public RecyclerViewBabyNameHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.babyname_item, parent, false);
@@ -49,8 +51,8 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
 
         return recyclerViewBabyNameHolder;
     }
-
-    @Override
+*/
+  /*  @Override
     public void onBindViewHolder(RecyclerViewBabyNameHolder holder, final int position) {
 
         BabyName babyName = selectedList.get(position);
@@ -67,19 +69,20 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
 
                 selectedList.get(position).setChecked(isChecked);
 
-                Log.v("babyy",selectedList.get(position).getName()+"  " +selectedList.get(position).isChecked());
+                Log.v("babyy", selectedList.get(position).getName() + "  " + selectedList.get(position).isChecked());
 
             }
         });
 
     }
 
-    @Override
+*/
+  /*  @Override
     public int getItemCount() {
         return selectedList == null ? 0 : selectedList.size();
     }
-
-    public class RecyclerViewBabyNameHolder extends RecyclerView.ViewHolder {
+*/
+  /*  public class RecyclerViewBabyNameHolder extends RecyclerView.ViewHolder {
 
         TextView name;
         CheckBox checkBox;
@@ -106,13 +109,12 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
 
         }
-    }
 
+    }
+*/
     public void changeList(boolean selectBoys) {
 
         selectedList=null;
-        notifyDataSetChanged();
-
 
         if (selectBoys)
             selectedList = boysNames;
@@ -121,4 +123,49 @@ public class RecyclerViewBabyNameAdapter extends RecyclerView.Adapter<RecyclerVi
         notifyDataSetChanged();
     }
 
-}
+    @Override
+    public int getCount() {
+        return selectedList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return selectedList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View nameViewItem  = null;
+
+        if (convertView == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            nameViewItem = layoutInflater.inflate(R.layout.babyname_item, parent, false);
+        } else {
+
+            nameViewItem = convertView;
+        }
+
+        Log.v("dkholt", "DrawerListViewnItemAdapter-getView");
+
+        CheckBox checkBox = ((CheckBox)nameViewItem.findViewById(R.id.checkbox));
+                ((TextView) nameViewItem.findViewById(R.id.name)).setText(selectedList.get(position).getName());
+                 checkBox.setChecked(selectedList.get(position).isChecked());
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                selectedList.get(position).setChecked(isChecked);
+            }
+        });
+        Log.v("dkholt", "DrawerListViewnItemAdapter-getViewAfter");
+
+
+
+        return nameViewItem;
+    }
+    }

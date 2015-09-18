@@ -19,7 +19,7 @@ import com.doomonafireball.betterpickers.datepicker.DatePickerBuilder;
 import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerBuilder;
 import com.doomonafireball.betterpickers.numberpicker.NumberPickerDialogFragment;
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -27,7 +27,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -80,7 +83,13 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
     ArrayList<String> xValsDates = new ArrayList<String>();
 
     ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
+    ArrayList<Entry> vals2Poids = new ArrayList<Entry>();
+    ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+    LineData data = new LineData(xValsDates, dataSets);
+
+
     int cpt = 0;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     public boolean isAddPoidsIsVisible() {
         return addPoidsIsVisible;
@@ -88,7 +97,45 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     private boolean addPoidsIsVisible;
 
+    Date date = new Date();
+    private void setData(int count, float range) {
 
+       for (int i = 0; i < 42; i++) {
+
+          date.setHours( i);
+           xValsDates.add(dateFormat.format( date));
+
+       }
+
+        for (int i = 0; i < 42; i++) {
+
+            float mult = (range + 1);
+            float val = (float) (i/10+10*Math.random()-10*Math.random()) + 60;// + (float)
+            // ((mult *
+            // 0.1) / 10);
+            vals2Poids.add(new Entry(val, i));
+
+        }
+
+        LineDataSet set1 = new LineDataSet(vals2Poids, "DataSet 2");
+        set1.setDrawCubic(true);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawFilled(true);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(2f);
+        set1.setCircleSize(5f);
+        set1.setHighLightColor(Color.rgb(0, 117, 117));
+        set1.setColor(Color.rgb(20, 241, 175));
+
+        dataSets.add(set1);
+
+        // create a data object with the datasets
+
+        data.addDataSet(set1);
+        // set data
+        mChart.setData(data);
+
+    }
 
         public BabyWeightFragment() {
             // Required empty public constructor
@@ -193,7 +240,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
             //  y.setTypeface(tf);
             y.setLabelCount(1);
 
-            //setData(36, 100);
+          // setData(36, 100);
             mChart.animateXY(2000, 2000);
 
             return view;
@@ -246,7 +293,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void showAddPoids(AddFloatingActionButton addFloatingActionButton) {
+    public void showAddPoids(FloatingActionButton floatingActionButton) {
        /* ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();;
         layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT ;
         linearLayout.setLayoutParams(layoutParams);
@@ -267,7 +314,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     }
 
-    public void hideAddPoids(AddFloatingActionButton addFloatingActionButton) {
+    public void hideAddPoids(FloatingActionButton floatingActionButton) {
        /* ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();;
         layoutParams.height = 0 ;
         linearLayout.setLayoutParams(layoutParams);
@@ -301,15 +348,15 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
             set1.setDrawCircles(false);
             set1.setLineWidth(2f);
             set1.setCircleSize(5f);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.rgb(104, 241, 175));
+            set1.setHighLightColor(Color.rgb(244, 22, 117));
+            set1.setColor(Color.rgb(254, 22, 175));
 
-            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
             dataSets.add(set1);
 
             // create a data object with the datasets
-            LineData data = new LineData(xValsDates, dataSets);
+          //  LineData data = new LineData(xValsDates, dataSets);
 
+            data.addDataSet(set1);
             // set data
             mChart.setData(data);
         }
