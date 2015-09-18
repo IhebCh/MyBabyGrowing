@@ -14,7 +14,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
 
     private Toolbar toolbar;
-    private Fragment meFragment = null;
+    private Fragment fragment = null;
 
 
     @Override
@@ -27,9 +27,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-     /*  getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.app_bar_title);
-*/
 
         getSupportActionBar().setTitle("Accueille");
         getSupportActionBar().setSubtitle("");
@@ -74,7 +71,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         return super.onOptionsItemSelected(item);
     }
 
-
+BabyFragment babyFragment =new BabyFragment();
+    MeFragment meFragment =  new MeFragment();
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -83,16 +81,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         switch (position) {
             case 1:
-                meFragment = new BabyFragment();
+                fragment = babyFragment;
                 Log.v("Fragment", position + "  --  " + fragmentManager.beginTransaction()
-                        .replace(R.id.frame_container, meFragment)
+                        .replace(R.id.frame_container, fragment)
                         .commit());
 
                 break;
             case 2:
-                meFragment = new MeFragment();
+                fragment =meFragment;
                 Log.v("Fragment", position + "  --  " + fragmentManager.beginTransaction()
-                        .replace(R.id.frame_container, meFragment)
+                        .replace(R.id.frame_container, fragment)
                         .commit());
 
                 break;

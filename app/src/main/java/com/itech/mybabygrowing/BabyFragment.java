@@ -92,6 +92,7 @@ public class BabyFragment extends Fragment {
 
         pagerSlidingTabStrip.setViewPager(viewPager);
 
+
         pagerSlidingTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -102,6 +103,7 @@ public class BabyFragment extends Fragment {
                 floatingActionButton.setScaleX(1 - positionOffset * 2);
 
                 floatingActionButton.setScaleY(1 - positionOffset * 2);
+
                 //  if (positionOffset >0.5) positionOffset=1-positionOffset ;
                 //    floatingActionButton.setAlpha(1 - positionOffset*2 );
             }
@@ -118,6 +120,7 @@ public class BabyFragment extends Fragment {
                             floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.male));
                         } else {
                             floatingActionButton.setIconDrawable(getResources().getDrawable(R.drawable.female));
+
                         }
                         break;
 
@@ -144,10 +147,13 @@ public class BabyFragment extends Fragment {
             public void onClick(View v) {
                 switch (currentPage) {
                     case 0:
-                        if (((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).isBoysList())
+
+                        if (((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).isBoysList()) {
                             ((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).showGirlsList(floatingActionButton);
-                        else
+                        }
+                        else {
                             ((BabyNamesFragment) babyPagerAdapter.getItem(currentPage)).showBoysList(floatingActionButton);
+                        }
 
                         break;
                     case 1:

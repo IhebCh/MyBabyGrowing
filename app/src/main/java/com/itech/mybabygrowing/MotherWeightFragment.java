@@ -55,6 +55,11 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
     private ViewGroup container;
     private ViewGroup.LayoutParams layoutParams;
     private TextView addPoids,addDate ;
+    private boolean dateAdded =false ,poidAdded=false;
+    ArrayList<String> xValsDates = new ArrayList<String>();
+
+    ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
+    int cpt = 0 ;
 
     public boolean isAddPoidsIsVisible() {
         return addPoidsIsVisible;
@@ -62,43 +67,22 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
     private boolean addPoidsIsVisible;
 
-
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < 36; i++) {
-            xVals.add((i) + "");
+    /*    for (int i = 0; i < 36; i++) {
+            xValsDates.add((i) + "");
         }
+*/
 
-        ArrayList<Entry> vals1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < 36; i++) {
+     /*   for (int i = 0; i < 36; i++) {
             float mult = (range + 1);
             float val = (float) (i/10+10*Math.random()-10*Math.random()) + 60;// + (float)
             // ((mult *
             // 0.1) / 10);
-            vals1.add(new Entry(val, i));
+            vals1Poids.add(new Entry(val, i));
         }
+*/
 
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-        set1.setDrawCubic(true);
-        set1.setCubicIntensity(0.2f);
-        set1.setDrawFilled(true);
-        set1.setDrawCircles(false);
-        set1.setLineWidth(2f);
-        set1.setCircleSize(5f);
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setColor(Color.rgb(104, 241, 175));
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(set1);
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-
-        // set data
-        mChart.setData(data);
     }
     /**
      * Use this factory method to create a new instance of
@@ -221,9 +205,9 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
         YLabels y = mChart.getYLabels();
         //  y.setTypeface(tf);
-        y.setLabelCount(5);
+        y.setLabelCount(1);
 
-        setData(36, 100);
+        //setData(36, 100);
         mChart.animateXY(2000, 2000);
 
         return  view ;
@@ -246,11 +230,13 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
     @Override
     public void onDialogDateSet(int i, int i1, int i2, int i3) {
         addDate.setText(i3+"/"+i2+"/"+i1);
+        dateAdded=true;
     }
 
     @Override
     public void onDialogNumberSet(int i, int i1, double v, boolean b, double v1) {
         addPoids.setText(v1+" Kg");
+        poidAdded=true;
     }
 
     /**
@@ -302,7 +288,39 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
                         linearLayout.setVisibility(View.GONE);
                         addPoidsIsVisible = false;
 
+                        addDate.setText("");
+                        addPoids.setText("");
+                        dateAdded = false ;
+                        poidAdded = false ;
+
                     }
                 });
+
+        if(dateAdded && poidAdded) {
+            xValsDates.add(addDate.getText() + "");
+
+            vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
+            cpt++;
+
+            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+            set1.setDrawCubic(true);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(2f);
+            set1.setCircleSize(5f);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(104, 241, 175));
+
+            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+            dataSets.add(set1);
+
+            // create a data object with the datasets
+            LineData data = new LineData(xValsDates, dataSets);
+
+            // set data
+            mChart.setData(data);
+        }
+
     }
 }

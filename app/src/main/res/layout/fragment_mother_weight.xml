@@ -100,7 +100,7 @@
             android:layout_marginBottom="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="0.90"
             android:background="@drawable/rounded"
             android:gravity="center">

@@ -30,6 +30,7 @@ public class MeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     private AddFloatingActionButton addFloatingActionButton;
 
     private ViewPager viewPager;
@@ -43,6 +44,7 @@ public class MeFragment extends Fragment {
     private int currentPage;
 
     //private OnFragmentInteractionListener mListener;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -69,6 +71,7 @@ public class MeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
