@@ -1,25 +1,32 @@
 package com.itech.models;
 
-import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
-
 /**
  * Created by oSunshine on 03/07/2015.
  */
 public class Appointement {
-    private int id ;
 
+    private int id ;
 
     String nom, date, heure, commentaire;
 
+    public String getCommentaire() {
+        return commentaire;
+    }
+
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
     public Appointement(String nom , String date , String heure , String commentaire){
+
         this.nom = nom ;
         this.date=date ;
         this.heure=heure ;
         this.commentaire=commentaire ;
 
     }
-    public Appointement(){
 
+    public Appointement(){
 
     }
 

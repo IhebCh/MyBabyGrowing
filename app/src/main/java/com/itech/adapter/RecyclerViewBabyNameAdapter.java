@@ -28,7 +28,6 @@ public class RecyclerViewBabyNameAdapter extends BaseAdapter {
     private List<BabyName> selectedList;
     private final LayoutInflater inflater;
 
-
     public RecyclerViewBabyNameAdapter(Context context, List<BabyName> boysNames, List<BabyName> girlsNames) {
         this.girlsNames = new ArrayList<>(girlsNames);
         this.boysNames = new ArrayList<>(boysNames);
@@ -42,76 +41,7 @@ public class RecyclerViewBabyNameAdapter extends BaseAdapter {
         return boysNames;
     }
 
-/*    @Override
-    public RecyclerViewBabyNameHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.babyname_item, parent, false);
-
-        RecyclerViewBabyNameHolder recyclerViewBabyNameHolder = new RecyclerViewBabyNameAdapter.RecyclerViewBabyNameHolder(view);
-
-        return recyclerViewBabyNameHolder;
-    }
-*/
-  /*  @Override
-    public void onBindViewHolder(RecyclerViewBabyNameHolder holder, final int position) {
-
-        BabyName babyName = selectedList.get(position);
-
-        holder.getName().setText(babyName.getName());
-
-        holder.getCheckBox().setSelected(babyName.isChecked());
-
-        holder.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                notifyDataSetChanged();
-
-                selectedList.get(position).setChecked(isChecked);
-
-                Log.v("babyy", selectedList.get(position).getName() + "  " + selectedList.get(position).isChecked());
-
-            }
-        });
-
-    }
-
-*/
-  /*  @Override
-    public int getItemCount() {
-        return selectedList == null ? 0 : selectedList.size();
-    }
-*/
-  /*  public class RecyclerViewBabyNameHolder extends RecyclerView.ViewHolder {
-
-        TextView name;
-        CheckBox checkBox;
-
-        public TextView getName() {
-            return name;
-        }
-
-        public void setName(TextView name) {
-            this.name = name;
-        }
-
-        public CheckBox getCheckBox() {
-            return checkBox;
-        }
-
-        public void setCheckBox(CheckBox checkBox) {
-            this.checkBox = checkBox;
-        }
-
-        public RecyclerViewBabyNameHolder(View itemView) {
-            super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
-
-        }
-
-    }
-*/
     public void changeList(boolean selectBoys) {
 
         selectedList=null;

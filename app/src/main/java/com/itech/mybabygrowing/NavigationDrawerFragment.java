@@ -54,8 +54,8 @@ public class NavigationDrawerFragment extends Fragment {
 
         List<DrawerListViewItem> list = new ArrayList<>();
         DrawerListViewItem drawerListViewItem;
-        int[] iconTableau = {R.drawable.today_selected_btn, R.drawable.baby_btn, R.drawable.me_btn, R.drawable.more_btn};
-        String[] textTableau = {"Aujourdhui", "Mon enfant", "Moi", "Plus"};
+        int[] iconTableau = {R.drawable.today_selected_btn, R.drawable.baby_btn, R.drawable.me_btn, R.drawable.community_btn};
+        String[] textTableau = {"Aujourdhui", "Mon enfant", "Moi", "Communauté"};
         for (int i = 0; i < iconTableau.length; i++) {
             drawerListViewItem = new DrawerListViewItem();
             drawerListViewItem.setTitle(textTableau[i]);
@@ -180,7 +180,7 @@ public class NavigationDrawerFragment extends Fragment {
 
                     break;
                 case 3:
-                    ((ImageView) (listView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.more_btn);
+                    ((ImageView) (listView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.community_btn);
 
                     break;
 
@@ -204,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment {
 
                     break;
                 case 3:
-                    ((ImageView) (listView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.more_selected_btn);
+                    ((ImageView) (listView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.community_selected_btn);
 
                     break;
 

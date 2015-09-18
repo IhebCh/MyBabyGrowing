@@ -17,7 +17,8 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7
+            ;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
@@ -40,28 +41,30 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
         ajouterDesNomsBebes(db);
+        ajouterDesRendezvous(db);
 
     }
     // en cas de changement de version et la BDD existe déjà
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS babyname");
+        db.execSQL("DROP TABLE IF EXISTS rendezvous");
         onCreate(db);
     }
-   public void ajouterDesNomsBebes(SQLiteDatabase db) {
-       // SQLiteDatabase db = this.getWritableDatabase();
-       initData_babynames();
+    public void ajouterDesNomsBebes(SQLiteDatabase db) {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        initData_babynames();
 
-       for(BabyName babyname : babyNames_tous){
-           ContentValues contentValues = new ContentValues();
-           contentValues.put("nombebe", babyname.getName());
-           contentValues.put("checked", babyname.isChecked());
-           contentValues.put("genre", babyname.getGenre());
-           db.insert("babyname",null,contentValues);
-           //db.close();
-       }
+        for(BabyName babyname : babyNames_tous){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nombebe", babyname.getName());
+            contentValues.put("checked", babyname.isChecked());
+            contentValues.put("genre", babyname.getGenre());
+            db.insert("babyname",null,contentValues);
+            //db.close();
+        }
 
-   }
+    }
 
     public void ajouterDesRendezvous(SQLiteDatabase db) {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -80,7 +83,6 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     public  ArrayList<BabyName> getBabyNamesByGenre(String genre) {
         ArrayList<BabyName> babyNameslist = new ArrayList<BabyName>();
         String query ="select * from babyname where lower(genre)=?";
-
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{genre.toLowerCase()});
@@ -107,19 +109,20 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
     public  ArrayList<Appointement> getAllAppointement() {
         ArrayList<Appointement> rendezvouslist = new ArrayList<Appointement>();
-        String query ="select * from rendezvous";
 
+        String query ="select * from rendezvous";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null) ;
+
         if(cursor.moveToFirst()) {
             do {
                 Appointement rendezvous = new Appointement();
                 rendezvous.setId(cursor.getInt(0));
                 rendezvous.setNom(cursor.getString(1));
                 rendezvous.setDate(cursor.getString(2));
-                rendezvous.setDate(cursor.getString(3));
-                rendezvous.setDate(cursor.getString(4));
+                rendezvous.setHeure(cursor.getString(3));
+                rendezvous.setCommentaire(cursor.getString(4));
                 rendezvouslist.add(rendezvous);
             }while(cursor.moveToNext());
         }
@@ -130,21 +133,21 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
     public void initData_babynames(){
         BabyName[] babyName_tous_table = new BabyName[]
-       { new BabyName("Iheb", false,"boy"),
-        new BabyName("Anis", false,"boy"),
-        new BabyName("Said", false,"boy"),
+                { new BabyName("Iheb", false,"boy"),
+                        new BabyName("Anis", false,"boy"),
+                        new BabyName("Said", false,"boy"),
 
 
-        new BabyName("Abderahman", false,"boy"),
-        new BabyName("Amine", false,"boy"),
-        new BabyName("Imad", false,"boy"),
-        new BabyName("Ishak", false,"boy"),
-        new BabyName("Younes", false,"boy"),
+                        new BabyName("Abderahman", false,"boy"),
+                        new BabyName("Amine", false,"boy"),
+                        new BabyName("Imad", false,"boy"),
+                        new BabyName("Ishak", false,"boy"),
+                        new BabyName("Younes", false,"boy"),
 
-       new BabyName("Hiba", false,"girl"),
-       new BabyName("Lina", false,"girl"),
-       new BabyName("Nawal", false,"girl"),
-       new BabyName("Khadija", false,"girl")
+                        new BabyName("Hiba", false,"girl"),
+                        new BabyName("Lina", false,"girl"),
+                        new BabyName("Nawal", false,"girl"),
+                        new BabyName("Khadija", false,"girl")
 
                 };
         babyNames_tous =  new ArrayList<>(Arrays.asList(babyName_tous_table)) ;
@@ -152,9 +155,9 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
     public void init_data_rendezvous() {
         Appointement[] rendezvous_tous_table = new Appointement[]
-                {new Appointement("rendez vous 1","20 / 06 / 2015 ", "08:00", " rendez vous pour ... "),
-                        new Appointement("rendez vous 2","12 / 07 / 2015 ", "09:00", " rendez vous pour ... "),
-                        new Appointement("rendez vous 3","10 / 08 / 2015 ", "10:00", " rendez vous pour ..."),
+                {new Appointement("rendez vous 1","20/06/2015", "08:00", " rendez vous pour ... "),
+                        new Appointement("rendez vous 2","12/07/2015", "09:00", " rendez vous pour ... "),
+                        new Appointement("rendez vous 3","10/08/2015", "10:00", " rendez vous pour ..."),
 
                 } ;
         rendezvous_tous = new ArrayList<>(Arrays.asList(rendezvous_tous_table)) ;
@@ -177,3 +180,9 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         return imageByte;
     }
 }
+
+
+
+
+
+

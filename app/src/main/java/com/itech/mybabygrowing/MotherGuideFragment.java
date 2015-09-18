@@ -2,7 +2,6 @@ package com.itech.mybabygrowing;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itech.adapter.RecyclerViewItemAdapter;
@@ -42,21 +40,31 @@ public class MotherGuideFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+      int[] iconTableauList = {R.drawable.guide_food, R.drawable.guide_exercise, R.drawable.guide_medical};
+      String[] textTableauList = {"Nutrition", "Exercice", "Medical" };
 
-    public static List<DrawerListViewItem> getData() {
+      int[] IconTableauListNutrition = {R.drawable.fruits,R.drawable.laitages,R.drawable.viandes_poisson_eoufs};
+      String[] textTableauListNutrition = {" 3 fruits. Consommez de préférence des fruits plutôt que des jus de fruits. Plus concentrés, ceux-ci sont riches en sucre, donc souvent trop caloriques (comme un soda). Oui à la banane, mais pas au même repas qu’un féculent !",
+
+            " 3 ou 4 parts, soit 1 part de fromage par jour + 3 parts de lait, yaourt, fromage blanc, etc. Il faut 1 200 mg de calcium par jour. 300 mg = 40 g de fromage à pâte dure (parmesan, gruyère, comté… très riches en graisse aussi !) = ¼ l de lait = 300 g de fromage blanc = 1, 2 ou 3 yaourts. Lisez les étiquettes : le taux en calcium d’un yaourt blanc varie de 130 à 300 mg d’une marque à l’autre.",
+            "Les viandes, poissons, œufs : 2 parts, sachant qu'1 part = 150 à 200 g de viande, de poisson, 1 œuf, 2 tranches de jambon. Pas de cru pour éviter les parasites et les problèmes de digestion. On ne compte pas les œufs que l’on met dans un gâteau."};
+
+
+
+    public static List<DrawerListViewItem> getData(int[] iconTableauList,String[] textTableauList) {
 
         List<DrawerListViewItem> list = new ArrayList<>();
         DrawerListViewItem drawerListViewItem;
-        int[] iconTableau = {R.drawable.guide_food, R.drawable.guide_exercise, R.drawable.guide_medical, R.drawable.guide_labour};
-        String[] textTableau = {"Nutrition", "Exercice", "Medical", "Plus"};
-        for (int i = 0; i < iconTableau.length; i++) {
+
+        for (int i = 0; i < iconTableauList.length; i++) {
             drawerListViewItem = new DrawerListViewItem();
-            drawerListViewItem.setTitle(textTableau[i]);
-            drawerListViewItem.setIconId(iconTableau[i]);
+            drawerListViewItem.setTitle(textTableauList[i]);
+            drawerListViewItem.setIconId(iconTableauList[i]);
             list.add(drawerListViewItem);
         }
         return list;
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -91,7 +99,7 @@ public class MotherGuideFragment extends Fragment {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_mother_guide, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.mother_guide_list);       // Inflate the layout for this fragment
-        recyclerViewItemAdapter = new RecyclerViewItemAdapter(getActivity(), getData());
+        recyclerViewItemAdapter = new RecyclerViewItemAdapter(getActivity(), getData(iconTableauList,textTableauList));
 
         recyclerView.setAdapter(recyclerViewItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -100,68 +108,30 @@ public class MotherGuideFragment extends Fragment {
             @Override
             public void onClick(View view, int position, RecyclerView recyclerView) {
 
-                Toast.makeText(getActivity(), "Onclick " + position + " sel " + recyclerViewSelectedItem, Toast.LENGTH_SHORT).show();
 
-            /*remove selection from previous item */
-
-                ((TextView) recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text)).setTextColor(getResources().getColor(R.color.primary_color_text));
-                recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(Color.TRANSPARENT);
-
-            /*    switch (recyclerViewSelectedItem) {
-
-                    case 0:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.today_btn);
-                        break;
-                    case 1:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.baby_btn);
-
-                        break;
-                    case 2:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.me_btn);
-
-                        break;
-                    case 3:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.more_btn);
-
-                        break;
-
-                }*/
+               // ((TextView) recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text)).setTextColor(getResources().getColor(R.color.primary_color_text));
+                //recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(Color.TRANSPARENT);
 
                   /*  select current item and highlight */
                 recyclerViewSelectedItem = position;
-                ((TextView) recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text)).setTextColor(getResources().getColor(R.color.primary_color_text_big));
-                recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(getResources().getColor(R.color.primary_color_light));
+               // ((TextView) recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text)).setTextColor(getResources().getColor(R.color.primary_color_text_big));
+                //recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(getResources().getColor(R.color.primary_color_light));
 
-           /*     switch (recyclerViewSelectedItem) {
-                    case 0:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.today_selected_btn);
-                        break;
-                    case 1:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.baby_selected_btn);
+                //recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text);
 
-                        break;
-                    case 2:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.me_selected_btn);
+                switch (position) {
+
+                    case 0 :
+
+                        recyclerViewItemAdapter.changeList(getData(IconTableauListNutrition,textTableauListNutrition));
 
                         break;
-                    case 3:
-                        ((ImageView) (recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_icon))).setImageResource(R.drawable.more_selected_btn);
-
-                        break;
-
-                }*/
-
-
-//                recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(Color.TRANSPARENT);
-                recyclerView.getChildAt(recyclerViewSelectedItem).findViewById(R.id.list_text);
-
-
-                //              recyclerView.getChildAt(recyclerViewSelectedItem).setBackgroundColor(Color.CYAN);
-
+                }
             }
 
             @Override
             public void onLongClick(View view, int position, RecyclerView recyclerView) {
+
                 Toast.makeText(getActivity(), "OnLongclick " + position, Toast.LENGTH_SHORT).show();
 
             }
@@ -228,7 +198,6 @@ public class MotherGuideFragment extends Fragment {
             if (view != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
                 clickListener.onClick(view, rv.getChildPosition(view), rv);
             }
-
 
             return false;
         }

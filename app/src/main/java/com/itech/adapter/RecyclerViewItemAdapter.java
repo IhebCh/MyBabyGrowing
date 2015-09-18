@@ -59,12 +59,12 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewIt
         ImageView image;
 
         public RecyclerViewItemHolder(View itemView) {
+
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.list_text);
             image = (ImageView) itemView.findViewById(R.id.list_icon);
 
         }
-
 
     }
 
@@ -72,4 +72,13 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewIt
         data.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void changeList(List<DrawerListViewItem> data) {
+
+        this.data=data ;
+
+        notifyDataSetChanged();
+    }
+
+
 }
