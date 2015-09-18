@@ -39,6 +39,7 @@ public class BabyNamesFragment extends Fragment {
     private ArrayList<BabyName> babyNamesBoys;
     private ArrayList<BabyName> babyNamesGirls;
     private Activity activity;
+    DataBaseSQLiteHandler dbh ;
 
 
     public boolean isBoysList() {
@@ -159,9 +160,18 @@ public class BabyNamesFragment extends Fragment {
     }
 
     public  void init_data_bebenames(){
-        DataBaseSQLiteHandler dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
+         dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
         babyNamesBoys=dbh.getBabyNamesByGenre("boy") ;
         babyNamesGirls=dbh.getBabyNamesByGenre("girl") ;
 
+    }
+
+    @Override
+    public void onDestroy() {
+
+
+
+
+        super.onDestroy();
     }
 }

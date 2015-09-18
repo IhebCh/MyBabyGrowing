@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
