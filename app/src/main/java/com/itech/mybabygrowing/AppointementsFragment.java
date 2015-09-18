@@ -105,12 +105,10 @@ public class AppointementsFragment extends Fragment implements DatePickerDialogF
             else{
                 Log.d("rendez vous", "null" ) ;
             }
-
-
         }
 
-
     }
+
     ArrayList<Appointement> appointementItems= new ArrayList<Appointement>();
 
     @TargetApi(Build.VERSION_CODES.CUPCAKE)

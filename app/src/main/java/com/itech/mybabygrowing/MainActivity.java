@@ -16,6 +16,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private Toolbar toolbar;
     private Fragment fragment = null;
 
+    ProjetNaissance projetNaissance ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        projetNaissance=ProjetNaissance.projetNaissance ;
 
         getSupportActionBar().setTitle("Accueille");
         getSupportActionBar().setSubtitle("");

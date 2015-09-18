@@ -314,9 +314,6 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
             lastAddedPoids.setDate(addDate.getText().toString());
             lastAddedPoids.setPoid(Float.parseFloat(addDate.getText().toString()));
-
-
-
         }
 
     }
