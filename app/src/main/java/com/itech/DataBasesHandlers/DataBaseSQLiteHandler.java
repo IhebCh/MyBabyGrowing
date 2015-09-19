@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 
 import com.itech.models.Appointement;
 import com.itech.models.BabyName;
+import com.itech.models.Poids;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -17,11 +18,12 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
     private ArrayList<Appointement> rendezvous_tous;
+    private ArrayList<Poids> poids_tous ;
 
 
 
@@ -37,9 +39,15 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         String create_table_rendezvous = "create table " +
                 "rendezvous(id integer primary key,nomrendezvous text, date text, heure text, commentaire text)";
 
+        String create_table_poids = "create table " +
+                "poids( date text primary key,poid real)";
+
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
+        db.execSQL(create_table_poids);
         ajouterDesNomsBebes(db);
+        ajouterDesRendezvous(db);
+        ajouterDesPoids(db) ;
 
     }
     // en cas de changement de version et la BDD existe déjà
@@ -47,8 +55,10 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS babyname");
         db.execSQL("DROP TABLE IF EXISTS rendezvous");
+        db.execSQL("DROP TABLE IF EXISTS poids");
         onCreate(db);
     }
+
    public void ajouterDesNomsBebes(SQLiteDatabase db) {
        // SQLiteDatabase db = this.getWritableDatabase();
        initData_babynames();
@@ -75,6 +85,40 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
             db.insert("rendezvous",null,contentValues);
             //db.close();
         }
+
+    }
+    public void ajouterRendezVous(String nom , String date , String heure , String commentaire){
+
+        SQLiteDatabase db = this.getWritableDatabase() ;
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("nomrendezvous", nom);
+        contentValues.put("date", date);
+        contentValues.put("heure", heure);
+        contentValues.put("commentaire", commentaire);
+        db.insert("rendezvous",null,contentValues);
+    }
+
+    public void ajouterDesPoids(SQLiteDatabase db) {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        init_data_poids();
+        for(Poids poid : poids_tous){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("date", poid.getDate());
+            contentValues.put("poid", poid.getPoid());
+            db.insert("poids",null,contentValues);
+            //db.close();
+        }
+
+    }
+    public void ajouterPoids(Poids poid){
+
+        SQLiteDatabase db = this.getWritableDatabase() ;
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date", poid.getDate());
+        contentValues.put("poid", poid.getPoid());
+        db.insert("poids",null,contentValues);
 
     }
 
@@ -128,6 +172,25 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         return rendezvouslist ;
     }
 
+    public  ArrayList<Poids> getAllPoids() {
+        ArrayList<Poids> poidslist = new ArrayList<Poids>();
+        String query ="select * from poids";
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null) ;
+        if(cursor.moveToFirst()) {
+            do {
+               Poids poid = new Poids();
+                poid.setDate(cursor.getString(0));
+                poid.setPoid(cursor.getFloat(1));
+                poidslist.add(poid);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return poidslist ;
+    }
+
 
     public void initData_babynames(){
         BabyName[] babyName_tous_table = new BabyName[]
@@ -160,21 +223,24 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
                 } ;
         rendezvous_tous = new ArrayList<>(Arrays.asList(rendezvous_tous_table)) ;
     }
-    public void ajouterRendezVous(String nom , String date , String heure , String commentaire){
 
-        SQLiteDatabase db = this.getWritableDatabase() ;
+    public void init_data_poids(){
+        Poids[] poids_tous_table=new Poids[]{
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("nomrendezvous", nom);
-        contentValues.put("date", date);
-        contentValues.put("heure", heure);
-        contentValues.put("commentaire", commentaire);
-        db.insert("rendezvous",null,contentValues);
+                new Poids("20/07/2015",new Float(80)),
+                new Poids("27/07/2015",new Float(82)),
+                new Poids("02/08/2015",new Float(83)),
+                new Poids("01/09/2015",new Float(84)),
+
+        };
+        poids_tous= new ArrayList<>(Arrays.asList(poids_tous_table)) ;
     }
+
     public byte[] getImageByte(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG,100,stream);
         byte[] imageByte = stream.toByteArray();
         return imageByte;
     }
+
 }
