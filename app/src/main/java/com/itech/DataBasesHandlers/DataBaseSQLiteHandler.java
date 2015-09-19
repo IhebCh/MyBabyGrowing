@@ -18,13 +18,13 @@ import java.util.Arrays;
 
 public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "bemyappdb";
     Context context ;
     private ArrayList<BabyName> babyNames_tous;
     private ArrayList<Appointement> rendezvous_tous;
-    private ArrayList<Poids> poids_tous ;
-
+    private ArrayList<Poids> poids_tous_bebe ;
+    private ArrayList<Poids> poids_tous_me ;
 
 
     public DataBaseSQLiteHandler(Context context) {
@@ -39,15 +39,20 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         String create_table_rendezvous = "create table " +
                 "rendezvous(id integer primary key,nomrendezvous text, date text, heure text, commentaire text)";
 
-        String create_table_poids = "create table " +
-                "poids( date text primary key,poid real)";
+        String create_table_poids_bebe = "create table " +
+                "poids_bebe( date text primary key,poid real)";
+        String create_table_poids_me = "create table " +
+                "poids_me( date text primary key,poid real)";
 
         db.execSQL(create_table_babyname);
         db.execSQL(create_table_rendezvous);
-        db.execSQL(create_table_poids);
+        db.execSQL(create_table_poids_bebe);
+        db.execSQL(create_table_poids_me);
+
         ajouterDesNomsBebes(db);
         ajouterDesRendezvous(db);
-        ajouterDesPoids(db) ;
+        ajouterDesPoidsBebe(db); ;
+        ajouterDesPoidsMe(db); ;
 
     }
     // en cas de changement de version et la BDD existe déjà
@@ -55,7 +60,8 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS babyname");
         db.execSQL("DROP TABLE IF EXISTS rendezvous");
-        db.execSQL("DROP TABLE IF EXISTS poids");
+        db.execSQL("DROP TABLE IF EXISTS poids_bebe");
+        db.execSQL("DROP TABLE IF EXISTS poids_me");
         onCreate(db);
     }
 
@@ -96,31 +102,56 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         contentValues.put("date", date);
         contentValues.put("heure", heure);
         contentValues.put("commentaire", commentaire);
-        db.insert("rendezvous",null,contentValues);
+        db.insert("rendezvous", null, contentValues);
     }
 
-    public void ajouterDesPoids(SQLiteDatabase db) {
+    public void ajouterDesPoidsBebe(SQLiteDatabase db) {
         // SQLiteDatabase db = this.getWritableDatabase();
-        init_data_poids();
-        for(Poids poid : poids_tous){
+        init_data_poids_bebe();
+        for(Poids poid : poids_tous_bebe){
             ContentValues contentValues = new ContentValues();
             contentValues.put("date", poid.getDate());
             contentValues.put("poid", poid.getPoid());
-            db.insert("poids",null,contentValues);
+            db.insert("poids_bebe",null,contentValues);
             //db.close();
         }
 
     }
-    public void ajouterPoids(Poids poid){
+
+    public void ajouterDesPoidsMe(SQLiteDatabase db) {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        init_data_poids_me();
+        for(Poids poid : poids_tous_me){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("date", poid.getDate());
+            contentValues.put("poid", poid.getPoid());
+            db.insert("poids_me",null,contentValues);
+            //db.close();
+        }
+
+    }
+    public void ajouterPoidsBebe(Poids poid){
 
         SQLiteDatabase db = this.getWritableDatabase() ;
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", poid.getDate());
         contentValues.put("poid", poid.getPoid());
-        db.insert("poids",null,contentValues);
+        db.insert("poids_bebe", null, contentValues);
 
     }
+
+    public void ajouterPoidsMe(Poids poid){
+
+        SQLiteDatabase db = this.getWritableDatabase() ;
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date", poid.getDate());
+        contentValues.put("poid", poid.getPoid());
+        db.insert("poids_me",null,contentValues);
+
+    }
+
 
     public  ArrayList<BabyName> getBabyNamesByGenre(String genre) {
         ArrayList<BabyName> babyNameslist = new ArrayList<BabyName>();
@@ -172,9 +203,9 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         return rendezvouslist ;
     }
 
-    public  ArrayList<Poids> getAllPoids() {
+    public  ArrayList<Poids> getAllPoidsBebe() {
         ArrayList<Poids> poidslist = new ArrayList<Poids>();
-        String query ="select * from poids";
+        String query ="select * from poids_bebe";
 
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -182,6 +213,26 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                Poids poid = new Poids();
+                poid.setDate(cursor.getString(0));
+                poid.setPoid(cursor.getFloat(1));
+                poidslist.add(poid);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return poidslist ;
+    }
+
+
+    public  ArrayList<Poids> getAllPoidsMe() {
+        ArrayList<Poids> poidslist = new ArrayList<Poids>();
+        String query ="select * from poids_me";
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null) ;
+        if(cursor.moveToFirst()) {
+            do {
+                Poids poid = new Poids();
                 poid.setDate(cursor.getString(0));
                 poid.setPoid(cursor.getFloat(1));
                 poidslist.add(poid);
@@ -224,16 +275,30 @@ public class DataBaseSQLiteHandler extends SQLiteOpenHelper {
         rendezvous_tous = new ArrayList<>(Arrays.asList(rendezvous_tous_table)) ;
     }
 
-    public void init_data_poids(){
+    public void init_data_poids_me(){
         Poids[] poids_tous_table=new Poids[]{
 
-                new Poids("20/07/2015",new Float(80)),
-                new Poids("27/07/2015",new Float(82)),
-                new Poids("02/08/2015",new Float(83)),
-                new Poids("01/09/2015",new Float(84)),
+
+
+                new Poids("20/07/2015",80f),
+                new Poids("27/07/2015",82f),
+                new Poids("02/08/2015",83f),
+                new Poids("01/09/2015",84f),
+        };
+
+        poids_tous_me= new ArrayList<>(Arrays.asList(poids_tous_table)) ;
+    }
+
+    public void init_data_poids_bebe(){
+        Poids[] poids_tous_table=new Poids[]{
+
+                new Poids("20/07/2015",6f),
+                new Poids("27/08/2015",6.1f),
+                new Poids("02/09/2015",6.12f),
+                new Poids("01/12/2015",6.3f),
 
         };
-        poids_tous= new ArrayList<>(Arrays.asList(poids_tous_table)) ;
+        poids_tous_bebe= new ArrayList<>(Arrays.asList(poids_tous_table)) ;
     }
 
     public byte[] getImageByte(Bitmap image) {

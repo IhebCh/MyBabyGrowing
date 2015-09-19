@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="Ahmed Lattali"
             android:textColor="#ff4d4d4d"
-            android:paddingTop="30dp"
+            android:paddingTop="20dp"
             android:textSize="20sp" />
 
         <TextView
@@ -30,6 +30,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
+
+
             android:text="Vous etes à la semaine 5"
             android:textColor="#ff4d4d4d"
             android:textSize="17sp" />

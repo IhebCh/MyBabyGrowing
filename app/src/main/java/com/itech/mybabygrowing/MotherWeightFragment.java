@@ -41,7 +41,7 @@ import java.util.ArrayList;
  * Use the {@link MotherWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MotherWeightFragment extends Fragment    implements DatePickerDialogFragment.DatePickerDialogHandler,NumberPickerDialogFragment.NumberPickerDialogHandler  {
+public class MotherWeightFragment extends Fragment implements DatePickerDialogFragment.DatePickerDialogHandler, NumberPickerDialogFragment.NumberPickerDialogHandler {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,19 +51,23 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
     private String mParam1;
     private String mParam2;
     private LinearLayout linearLayout;
-    private DataBaseSQLiteHandler dbh ;
+    private DataBaseSQLiteHandler dbh;
 
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
     private ViewGroup container;
     private ViewGroup.LayoutParams layoutParams;
-    private TextView addPoids,addDate ;
-    private boolean dateAdded =false ,poidAdded=false;
+    private TextView addPoids, addDate;
+    private boolean dateAdded = false, poidAdded = false;
+
     ArrayList<String> xValsDates = new ArrayList<String>();
 
     ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
-    int cpt = 0 ;
+
+    int cpt = 0;
+
+    ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
 
     public boolean isAddPoidsIsVisible() {
         return addPoidsIsVisible;
@@ -71,8 +75,40 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
     private boolean addPoidsIsVisible;
 
-    private void setData(int count, float range) {
 
+    private void setData() {
+
+        for (Poids poid : listes_poids) {
+            xValsDates.add(poid.getDate());
+
+            vals1Poids.add(new Entry(poid.getPoid(), cpt));
+
+
+            cpt++;
+
+            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+
+
+            set1.setDrawCubic(true);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(2f);
+            set1.setCircleSize(5f);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(154, 241, 175));
+
+            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+
+            dataSets.add(set1);
+
+            // create a data object with the datasets
+            LineData data = new LineData(xValsDates, dataSets);
+
+            // set data
+            mChart.setData(data);
+
+        }
 
     }
 
@@ -98,6 +134,8 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         // Required empty public constructor
     }
 
+    ArrayList<Poids> listes_poids;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +143,10 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
-        ArrayList<Poids> listes_poids = dbh.getAllPoids() ;
-        for(Poids poid  :  listes_poids){
-            Log.d(poid.getDate(), ((Float)poid.getPoid()).toString()) ;
 
-        }
+        dbh = new DataBaseSQLiteHandler(this.getActivity());
+
+        listes_poids = dbh.getAllPoidsMe();
 
     }
 
@@ -123,13 +159,13 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         this.container = container;
         linearLayout = (LinearLayout) view.findViewById(R.id.addPoids);
         //   hideAddAppointments();
-        layoutParams = linearLayout.getLayoutParams() ;
+        layoutParams = linearLayout.getLayoutParams();
         //   linearLayout.animate().scaleY(0).alpha(1.0f).setDuration(5000);
         addPoidsIsVisible = false;
         linearLayout.setVisibility(View.GONE);
 
-        addPoids=(TextView)view.findViewById(R.id.poids);
-        addDate=(TextView)view.findViewById(R.id.date);
+        addPoids = (TextView) view.findViewById(R.id.poids);
+        addDate = (TextView) view.findViewById(R.id.date);
         final Time time = new Time();
         time.setToNow();
 
@@ -205,10 +241,10 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
         //  y.setTypeface(tf);
         y.setLabelCount(1);
 
-        //setData(36, 100);
+        setData();
         mChart.animateXY(2000, 2000);
 
-        return  view ;
+        return view;
 
     }
 
@@ -227,14 +263,14 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
     @Override
     public void onDialogDateSet(int i, int i1, int i2, int i3) {
-        addDate.setText(i3+"/"+(i2+1)+"/"+i1);
-        dateAdded=true;
+        addDate.setText(i3 + "/" + (i2 + 1) + "/" + i1);
+        dateAdded = true;
     }
 
     @Override
     public void onDialogNumberSet(int i, int i1, double v, boolean b, double v1) {
-        addPoids.setText(v1+" Kg");
-        poidAdded=true;
+        addPoids.setText(v1 + " Kg");
+        poidAdded = true;
     }
 
     /**
@@ -288,57 +324,58 @@ public class MotherWeightFragment extends Fragment    implements DatePickerDialo
 
                         addDate.setText("");
                         addPoids.setText("");
-                        dateAdded = false ;
-                        poidAdded = false ;
+                        dateAdded = false;
+                        poidAdded = false;
 
                     }
                 });
 
-        if(dateAdded && poidAdded) {
-                xValsDates.add(addDate.getText() + "");
+        if (dateAdded && poidAdded) {
+            xValsDates.add(addDate.getText() + "");
 
-                vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
-                cpt++;
+            vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
 
-                LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
-                set1.setDrawCubic(true);
-                set1.setCubicIntensity(0.2f);
-                set1.setDrawFilled(true);
-                set1.setDrawCircles(false);
-                set1.setLineWidth(2f);
-                set1.setCircleSize(5f);
-                set1.setHighLightColor(Color.rgb(244, 117, 117));
-                set1.setColor(Color.rgb(104, 241, 175));
+            cpt++;
 
-                ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-                dataSets.add(set1);
+            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
 
-                // create a data object with the datasets
-                LineData data = new LineData(xValsDates, dataSets);
+            set1.setDrawCubic(true);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(2f);
+            set1.setCircleSize(5f);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(104, 241, 175));
 
-                // set data
-                mChart.setData(data);
+            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+            dataSets.add(set1);
 
-                Poids  lastAddedPoids = new Poids();
+            // create a data object with the datasets
+            LineData data = new LineData(xValsDates, dataSets);
 
-                lastAddedPoids.setDate(addDate.getText().toString());
-                lastAddedPoids.setPoid(Float.parseFloat(addPoids.getText().toString().replace(" Kg","")));
-           // lastAddedPoids.setPoid( Float.valueOf(addPoids.getText().toString())) ;
+            // set data
+            mChart.setData(data);
+
+            Poids lastAddedPoids = new Poids();
+
+            lastAddedPoids.setDate(addDate.getText().toString());
+            lastAddedPoids.setPoid(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")));
+            // lastAddedPoids.setPoid( Float.valueOf(addPoids.getText().toString())) ;
 
 
-
-
-            dbh.ajouterPoids(lastAddedPoids);
-            dbh=new DataBaseSQLiteHandler(this.getActivity()) ;
-            ArrayList<Poids> listes_poids = dbh.getAllPoids() ;
-            for(Poids poid  :  listes_poids){
-                Log.d(poid.getDate(), ((Float)poid.getPoid()).toString()) ;
+            dbh.ajouterPoidsMe(lastAddedPoids);
+            dbh = new DataBaseSQLiteHandler(this.getActivity());
+            ArrayList<Poids> listes_poids = dbh.getAllPoidsMe();
+            for (Poids poid : listes_poids) {
+                Log.d(poid.getDate(), ((Float) poid.getPoid()).toString());
 
             }
-
 
 
         }
 
     }
+
+
 }

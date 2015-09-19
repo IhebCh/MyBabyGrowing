@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
+import com.itech.DataBasesHandlers.DataBaseSQLiteHandler;
+import com.itech.models.Poids;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,7 +44,7 @@ import java.util.Date;
  * Use the {@link BabyWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BabyWeightFragment extends Fragment  implements DatePickerDialogFragment.DatePickerDialogHandler,NumberPickerDialogFragment.NumberPickerDialogHandler  {
+public class BabyWeightFragment extends Fragment  implements DatePickerDialogFragment.DatePickerDialogHandler,NumberPickerDialogFragment.NumberPickerDialogHandler {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,8 +87,8 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     ArrayList<Entry> vals1Poids = new ArrayList<Entry>();
     ArrayList<Entry> vals2Poids = new ArrayList<Entry>();
+
     ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-    LineData data = new LineData(xValsDates, dataSets);
 
 
     int cpt = 0;
@@ -97,156 +100,175 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     private boolean addPoidsIsVisible;
 
+    private DataBaseSQLiteHandler dbh;
+
+    ArrayList<Poids> listes_poids;
+
     Date date = new Date();
-    private void setData(int count, float range) {
 
-       for (int i = 0; i < 42; i++) {
 
-          date.setHours( i);
-           xValsDates.add(dateFormat.format( date));
+    private void setData() {
 
-       }
+        for (Poids poid : listes_poids) {
+            xValsDates.add(poid.getDate());
 
-        for (int i = 0; i < 42; i++) {
+            vals1Poids.add(new Entry(poid.getPoid(), cpt));
+            vals2Poids.add(new Entry(6 + (cpt * (cpt - 1) / 2), cpt));
 
-            float mult = (range + 1);
-            float val = (float) (i/10+10*Math.random()-10*Math.random()) + 60;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            vals2Poids.add(new Entry(val, i));
+            cpt++;
+
+            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+            LineDataSet set2 = new LineDataSet(vals2Poids, "DataSet 2");
+
+            set1.setDrawCubic(true);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(2f);
+            set1.setCircleSize(5f);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(104, 241, 175));
+
+            set2.setDrawCubic(true);
+            set2.setCubicIntensity(0.2f);
+            set2.setDrawFilled(true);
+            set2.setDrawCircles(false);
+            set2.setLineWidth(2f);
+            set2.setCircleSize(5f);
+            set2.setHighLightColor(Color.rgb(244, 24, 117));
+            set2.setColor(Color.argb(100, 233, 22, 175));
+
+            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+
+            dataSets.add(set1);
+
+            dataSets.add(set2);
+
+            // create a data object with the datasets
+            LineData data = new LineData(xValsDates, dataSets);
+
+            // set data
+            mChart.setData(data);
 
         }
-
-        LineDataSet set1 = new LineDataSet(vals2Poids, "DataSet 2");
-        set1.setDrawCubic(true);
-        set1.setCubicIntensity(0.2f);
-        set1.setDrawFilled(true);
-        set1.setDrawCircles(false);
-        set1.setLineWidth(2f);
-        set1.setCircleSize(5f);
-        set1.setHighLightColor(Color.rgb(0, 117, 117));
-        set1.setColor(Color.rgb(20, 241, 175));
-
-        dataSets.add(set1);
-
-        // create a data object with the datasets
-
-        data.addDataSet(set1);
-        // set data
-        mChart.setData(data);
 
     }
 
-        public BabyWeightFragment() {
-            // Required empty public constructor
+
+    public BabyWeightFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        @Override
-        public void onCreate (Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-            if (getArguments() != null) {
-                mParam1 = getArguments().getString(ARG_PARAM1);
-                mParam2 = getArguments().getString(ARG_PARAM2);
+        dbh = new DataBaseSQLiteHandler(this.getActivity());
+
+        listes_poids = dbh.getAllPoidsBebe();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_baby_weight, container, false);
+        this.container = container;
+        linearLayout = (LinearLayout) view.findViewById(R.id.addPoids);
+        //   hideAddAppointments();
+        layoutParams = linearLayout.getLayoutParams();
+        //   linearLayout.animate().scaleY(0).alpha(1.0f).setDuration(5000);
+        addPoidsIsVisible = false;
+        linearLayout.setVisibility(View.GONE);
+
+        addPoids = (TextView) view.findViewById(R.id.poids);
+        addDate = (TextView) view.findViewById(R.id.date);
+        final Time time = new Time();
+        time.setToNow();
+
+        addPoids.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NumberPickerBuilder npb = new NumberPickerBuilder()
+                        .setFragmentManager(getChildFragmentManager())
+                        .setStyleResId(R.style.BetterPickersDialogFragment)
+                        .setTargetFragment(BabyWeightFragment.this);
+
+                npb.show();
+
             }
-        }
+        });
 
-        @Override
-        public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState){
-            // Inflate the layout for this fragment
-            View view = inflater.inflate(R.layout.fragment_baby_weight, container, false);
-            this.container = container;
-            linearLayout = (LinearLayout) view.findViewById(R.id.addPoids);
-            //   hideAddAppointments();
-            layoutParams = linearLayout.getLayoutParams();
-            //   linearLayout.animate().scaleY(0).alpha(1.0f).setDuration(5000);
-            addPoidsIsVisible = false;
-            linearLayout.setVisibility(View.GONE);
-
-            addPoids = (TextView) view.findViewById(R.id.poids);
-            addDate = (TextView) view.findViewById(R.id.date);
-            final Time time = new Time();
-            time.setToNow();
-
-            addPoids.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NumberPickerBuilder npb = new NumberPickerBuilder()
-                            .setFragmentManager(getChildFragmentManager())
-                            .setStyleResId(R.style.BetterPickersDialogFragment)
-                            .setTargetFragment(BabyWeightFragment.this);
-
-                    npb.show();
-
-                }
-            });
-
-            addDate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DatePickerBuilder dpb = new DatePickerBuilder()
-                            .setFragmentManager(getChildFragmentManager())
-                            .setStyleResId(R.style.BetterPickersDialogFragment)
-                            .setTargetFragment(BabyWeightFragment.this);
-                    dpb.setYear(time.year);
-                    dpb.setMonthOfYear(time.month);
-                    dpb.show();
-                }
-            });
+        addDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerBuilder dpb = new DatePickerBuilder()
+                        .setFragmentManager(getChildFragmentManager())
+                        .setStyleResId(R.style.BetterPickersDialogFragment)
+                        .setTargetFragment(BabyWeightFragment.this);
+                dpb.setYear(time.year);
+                dpb.setMonthOfYear(time.month);
+                dpb.show();
+            }
+        });
 
          /*
                ************ Chart ***************
          */
 
-            mChart = (LineChart) view.findViewById(R.id.chart1);
-            // if enabled, the chart will always start at zero on the y-axis
-            mChart.setStartAtZero(true);
+        mChart = (LineChart) view.findViewById(R.id.chart1);
+        // if enabled, the chart will always start at zero on the y-axis
+        mChart.setStartAtZero(true);
 
-            // disable the drawing of values into the chart
-            mChart.setDrawYValues(false);
+        // disable the drawing of values into the chart
+        mChart.setDrawYValues(false);
 
-            mChart.setDrawBorder(true);
+        mChart.setDrawBorder(true);
 
-            mChart.setDrawLegend(false);
+        mChart.setDrawLegend(false);
 
-            // no description text
-            mChart.setDescription("");
-            mChart.setUnit(" Kg");
+        // no description text
+        mChart.setDescription("");
+        mChart.setUnit(" Kg");
 
 
-            // enable value highlighting
-            mChart.setHighlightEnabled(true);
+        // enable value highlighting
+        mChart.setHighlightEnabled(true);
 
-            // enable touch gestures
-            mChart.setTouchEnabled(true);
+        // enable touch gestures
+        mChart.setTouchEnabled(true);
 
-            // enable scaling and dragging
-            mChart.setDragEnabled(true);
-            mChart.setScaleEnabled(true);
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
 
-            // if disabled, scaling can be done on x- and y-axis separately
-            mChart.setPinchZoom(false);
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(false);
 
-            mChart.setDrawGridBackground(false);
-            mChart.setDrawVerticalGrid(false);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawVerticalGrid(false);
 
-            //  Typeface tf = Typeface.createFromAsset(v.getAssets(), "OpenSans-Regular.ttf");
-            //   mChart.setValueTypeface(tf);
+        //  Typeface tf = Typeface.createFromAsset(v.getAssets(), "OpenSans-Regular.ttf");
+        //   mChart.setValueTypeface(tf);
 
-            XLabels x = mChart.getXLabels();
-            //  x.setTypeface(tf);
+        XLabels x = mChart.getXLabels();
+        //  x.setTypeface(tf);
 
-            YLabels y = mChart.getYLabels();
-            //  y.setTypeface(tf);
-            y.setLabelCount(1);
+        YLabels y = mChart.getYLabels();
+        //  y.setTypeface(tf);
+        y.setLabelCount(1);
 
-          // setData(36, 100);
-            mChart.animateXY(2000, 2000);
+        setData();
+        mChart.animateXY(2000, 2000);
 
-            return view;
-        }
+        return view;
+    }
 
-        // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, update argument and hook method into UI event
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -268,14 +290,14 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
     @Override
     public void onDialogDateSet(int i, int i1, int i2, int i3) {
-        addDate.setText(i3+"/"+(i2+1)+"/"+i1);
-        dateAdded=true;
+        addDate.setText(i3 + "/" + (i2 + 1) + "/" + i1);
+        dateAdded = true;
     }
 
     @Override
     public void onDialogNumberSet(int i, int i1, double v, boolean b, double v1) {
-        addPoids.setText(v1+" Kg");
-        poidAdded=true;
+        addPoids.setText(v1 + " Kg");
+        poidAdded = true;
     }
 
     /**
@@ -335,32 +357,61 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
                     }
                 });
 
-        if(dateAdded && poidAdded) {
+        if (dateAdded && poidAdded) {
             xValsDates.add(addDate.getText() + "");
 
             vals1Poids.add(new Entry(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")), cpt));
+            vals2Poids.add(new Entry(6 + (cpt * (cpt - 1) / 2), cpt));
+
             cpt++;
 
             LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+            LineDataSet set2 = new LineDataSet(vals2Poids, "DataSet 2");
+
             set1.setDrawCubic(true);
             set1.setCubicIntensity(0.2f);
             set1.setDrawFilled(true);
             set1.setDrawCircles(false);
-            set1.setLineWidth(1f);
-            set1.setCircleSize(1f);
-            set1.setHighLightColor(Color.rgb(133 , 255,196));
-            set1.setColor(Color.rgb(133, 255, 196));
+            set1.setLineWidth(2f);
+            set1.setCircleSize(5f);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(104, 241, 175));
 
+            set2.setDrawCubic(true);
+            set2.setCubicIntensity(0.2f);
+            set2.setDrawFilled(true);
+            set2.setDrawCircles(false);
+            set2.setLineWidth(2f);
+            set2.setCircleSize(5f);
+            set2.setHighLightColor(Color.rgb(244, 24, 117));
+            set2.setColor(Color.argb(100, 233, 22, 175));
+
+            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
             dataSets.add(set1);
-
+            dataSets.add(set2);
             // create a data object with the datasets
-          //  LineData data = new LineData(xValsDates, dataSets);
+            LineData data = new LineData(xValsDates, dataSets);
 
-            data.addDataSet(set1);
             // set data
             mChart.setData(data);
+
+            Poids lastAddedPoids = new Poids();
+
+            lastAddedPoids.setDate(addDate.getText().toString());
+            lastAddedPoids.setPoid(Float.parseFloat(addPoids.getText().toString().replace(" Kg", "")));
+            // lastAddedPoids.setPoid( Float.valueOf(addPoids.getText().toString())) ;
+
+
+            dbh.ajouterPoidsBebe(lastAddedPoids);
+            dbh = new DataBaseSQLiteHandler(this.getActivity());
+            ArrayList<Poids> listes_poids = dbh.getAllPoidsBebe();
+            for (Poids poid : listes_poids) {
+                Log.d(poid.getDate(), ((Float) poid.getPoid()).toString());
+
+
+            }
+
         }
 
     }
-
 }
