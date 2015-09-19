@@ -11,8 +11,8 @@ public class DataBaseMySQLHandler {
 
     public static final String className = "com.mysql.jdbc.Driver";
     public static final String chaine
-          //  = "jdbc:mysql://localhost:3306/bibliodb_server";
-            = "jdbc:mysql://10.0.2.120:3306/bibliodb_server";
+            = "jdbc:mysql://localhost:3306/bemyapp";
+          //  = "jdbc:mysql://10.0.2.120:3306/bibliodb_server";
     static final String username = "root";
     static final String password = "";
 
