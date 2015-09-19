@@ -105,7 +105,7 @@ BabyFragment babyFragment =new BabyFragment();
         int count = getFragmentManager().getBackStackEntryCount();
 
         if (count == 0) {
-            super.onBackPressed();
+        //    super.onBackPressed();
             //additional code
         } else {
             getFragmentManager().popBackStack();

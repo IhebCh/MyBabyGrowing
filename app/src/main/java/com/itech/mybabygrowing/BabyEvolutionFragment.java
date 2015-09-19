@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.itech.adapter.BabyEvolutionPagerAdapter;
 
 
 /**
@@ -26,6 +29,7 @@ public class BabyEvolutionFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ViewPager mViewPager;
 
 
     /**
@@ -63,7 +67,15 @@ public class BabyEvolutionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_baby_evolution, container, false);
+        View v =  inflater.inflate(R.layout.fragment_baby_evolution, container, false);
+
+        BabyEvolutionPagerAdapter babyEvolutionPagerAdapter = new BabyEvolutionPagerAdapter(getActivity());
+
+        mViewPager = (ViewPager) v.findViewById(R.id.pager);
+        mViewPager.setAdapter(babyEvolutionPagerAdapter);
+
+
+        return v ;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
