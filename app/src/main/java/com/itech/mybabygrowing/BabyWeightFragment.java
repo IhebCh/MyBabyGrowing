@@ -117,8 +117,8 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
             cpt++;
 
-            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
-            LineDataSet set2 = new LineDataSet(vals2Poids, "DataSet 2");
+            LineDataSet set1 = new LineDataSet(vals1Poids, "Poids actuel");
+            LineDataSet set2 = new LineDataSet(vals2Poids, "Réference");
 
             set1.setDrawCubic(true);
             set1.setCubicIntensity(0.2f);
@@ -222,14 +222,12 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
         mChart = (LineChart) view.findViewById(R.id.chart1);
         // if enabled, the chart will always start at zero on the y-axis
-        mChart.setStartAtZero(true);
+        mChart.setStartAtZero(false);
 
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
 
         mChart.setDrawBorder(true);
-
-        mChart.setDrawLegend(false);
 
         // no description text
         mChart.setDescription("");
@@ -240,7 +238,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
         mChart.setHighlightEnabled(true);
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+    /*    mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
@@ -248,9 +246,11 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-
-        mChart.setDrawGridBackground(false);
+*/
+  //      mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
+
+        mChart.setDrawLegend(true);
 
         //  Typeface tf = Typeface.createFromAsset(v.getAssets(), "OpenSans-Regular.ttf");
         //   mChart.setValueTypeface(tf);
@@ -261,6 +261,8 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
         YLabels y = mChart.getYLabels();
         //  y.setTypeface(tf);
         y.setLabelCount(1);
+        x.setAdjustXLabels(true);
+        x.setSpaceBetweenLabels(2);
 
         setData();
         mChart.animateXY(2000, 2000);
@@ -365,8 +367,9 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
 
             cpt++;
 
-            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
-            LineDataSet set2 = new LineDataSet(vals2Poids, "DataSet 2");
+
+            LineDataSet set1 = new LineDataSet(vals1Poids, "Poids actuel");
+            LineDataSet set2 = new LineDataSet(vals2Poids, "Réference");
 
             set1.setDrawCubic(true);
             set1.setCubicIntensity(0.2f);
@@ -383,6 +386,7 @@ public class BabyWeightFragment extends Fragment  implements DatePickerDialogFra
             set2.setDrawCircles(false);
             set2.setLineWidth(2f);
             set2.setCircleSize(5f);
+
             set2.setHighLightColor(Color.rgb(244, 24, 117));
             set2.setColor(Color.argb(100, 233, 22, 175));
 

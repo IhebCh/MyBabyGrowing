@@ -86,7 +86,7 @@ public class MotherWeightFragment extends Fragment implements DatePickerDialogFr
 
             cpt++;
 
-            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+            LineDataSet set1 = new LineDataSet(vals1Poids, "Poids actuel");
 
 
             set1.setDrawCubic(true);
@@ -208,7 +208,7 @@ public class MotherWeightFragment extends Fragment implements DatePickerDialogFr
 
         mChart.setDrawBorder(true);
 
-        mChart.setDrawLegend(false);
+        mChart.setDrawLegend(true);
 
         // no description text
         mChart.setDescription("");
@@ -337,7 +337,7 @@ public class MotherWeightFragment extends Fragment implements DatePickerDialogFr
 
             cpt++;
 
-            LineDataSet set1 = new LineDataSet(vals1Poids, "DataSet 1");
+            LineDataSet set1 = new LineDataSet(vals1Poids, "Poids actuel");
 
             set1.setDrawCubic(true);
             set1.setCubicIntensity(0.2f);
