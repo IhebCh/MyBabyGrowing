@@ -20,16 +20,7 @@ public class ProjectNaissanceActivity extends ActionBarActivity implements Numbe
     TextView baby_age ;
     RadioGroup sexe  ;
 
-    public void ajouterAgeBebe(View v){
 
-
-                NumberPickerBuilder npb = new NumberPickerBuilder()
-                        .setFragmentManager(getSupportFragmentManager())
-                        .setStyleResId(R.style.BetterPickersDialogFragment);
-
-                npb.show();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +31,17 @@ public class ProjectNaissanceActivity extends ActionBarActivity implements Numbe
         nom=(EditText)findViewById(R.id.nom);
         prenom=(EditText)findViewById(R.id.prenom);
         sexe=(RadioGroup)findViewById(R.id.sexe);
+    baby_age.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
+            NumberPickerBuilder npb = new NumberPickerBuilder()
+                    .setFragmentManager(getSupportFragmentManager())
+                    .setStyleResId(R.style.BetterPickersDialogFragment);
+
+            npb.show();
+        }
+    });
     }
 
     @Override
@@ -83,6 +84,6 @@ public class ProjectNaissanceActivity extends ActionBarActivity implements Numbe
     @Override
     public void onDialogNumberSet(int i, int i1, double v, boolean b, double v1) {
 
-        baby_age.setText(v1+" Semaine(s)");
+        baby_age.setText(v1+"");
     }
 }

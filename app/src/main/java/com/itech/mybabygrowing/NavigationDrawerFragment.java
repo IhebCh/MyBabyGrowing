@@ -107,6 +107,10 @@ public class NavigationDrawerFragment extends Fragment {
 
         listView.setOnItemClickListener(new SlideMenuClickListener());
 
+        ((TextView) layout.findViewById(R.id.nomPrenom)).setText(ProjetNaissance.projetNaissance.getNom() + " " + ProjetNaissance.projetNaissance.getPrenom());
+        ((TextView) layout.findViewById(R.id.ageBebe)).setText("Semaine "+ProjetNaissance.projetNaissance.getDate());
+
+
         return layout;
     }
 

@@ -53,6 +53,7 @@
                     android:id="@+id/nom"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:inputType="textCapWords|textFilter|textNoSuggestions"
 
                     android:layout_weight="65"
                     android:background="#FFFFFF"
@@ -85,6 +86,7 @@
                     android:id="@+id/prenom"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:inputType="textCapWords|textFilter|textNoSuggestions"
 
                     android:layout_weight="65"
                     android:background="#FFFFFF"
@@ -120,7 +122,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center"
                     android:hint="En semaines"
-                    android:onClick="ajouterAgeBebe"
+
                     android:textColorHint="#ff7b7b7b" />
             </LinearLayout>
 

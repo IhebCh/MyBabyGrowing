@@ -21,20 +21,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Ahmed Lattali"
-            android:textColor="#ff4d4d4d"
+            android:textColor="#ff181818"
+            android:inputType="textCapWords|textFilter|textNoSuggestions"
+
             android:paddingTop="20dp"
+
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/ageBebe"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="7dp"
+            android:layout_margin="10dp"
 
-
-            android:text="Vous etes à la semaine 5"
+            android:text="Semaine 5"
             android:textColor="#ff4d4d4d"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
