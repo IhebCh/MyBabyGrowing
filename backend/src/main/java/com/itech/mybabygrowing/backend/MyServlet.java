@@ -8,7 +8,9 @@ package com.itech.mybabygrowing.backend;
 
 import java.io.IOException;
 
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class MyServlet extends HttpServlet {
     @Override
@@ -26,6 +28,12 @@ public class MyServlet extends HttpServlet {
         if (name == null) {
             resp.getWriter().println("Please enter a name");
         }
-        resp.getWriter().println("Hello " + name);
+        resp.getWriter().println("Hello " + name+"growing");
+
+      /*  DataBase dataBase =new DataBase() ;
+        List<Conseil> list =dataBase.getAllConseils() ;
+        Gson gson =new Gson() ;
+        resp.getWriter().print(gson.toJson(list)) ;*/
+
     }
 }
